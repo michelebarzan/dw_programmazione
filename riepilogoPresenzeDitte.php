@@ -22,7 +22,7 @@
 		<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 		<script src="html2canvas.js"></script>
 		<script src="canvasjs.min.js"></script>
-		<script src="riepilogoPresenzeDitte.js"></script>
+		<script src="js/riepilogoPresenzeDitte.js"></script>
 		<style>
 			.far,.fas,.fal{display:inline-block;float:left;}
 		</style>
