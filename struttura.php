@@ -1,4 +1,4 @@
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+	<!--<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>-->
 	<script src="https://kit.fontawesome.com/4462bc49a0.js"></script>
 	<div id="header" class="header" >
 		<input type="button" id="nascondi" value="" onclick="nascondi()" data-toggle='tooltip' title='Apri menu' />

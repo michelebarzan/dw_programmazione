@@ -20,7 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.0/css/jquery.dataTables.css" />
 		<script type="text/javascript" src="http://cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
 		<script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/modernizr-2.7.1.js"></script>
-		<script src="jquery.table2excel.js"></script>
+		<script src="js_libraries/jquery.table2excel.js"></script>
 		<script src="struttura.js"></script>
 		<script>
 			function getEsportazioneGriglia()
@@ -77,6 +77,7 @@
 			}
 			function scaricaExcel(table)
 			{
+				console.log("#"+table);
 				$("#"+table).table2excel({
 				// exclude CSS class
 				exclude: ".noExl",
