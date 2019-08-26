@@ -7,6 +7,16 @@ var grafico2;
 var tabella2;
 var grafico3;
 
+function getDatas0(view)
+{
+    switch(view)
+    {
+        case "grafico_operatori":grafico0=1;getGrafico0('chartContainer0');break;
+        case "grafico_ore":grafico0=2;getGrafico0('chartContainer0');break;
+        case "tabella_operatori":tabella0=1;getTabella0();break;
+        case "tabella_ore":tabella0=2;getTabella0();break;
+    }
+}
 function getGrafico0(container)
 {
     containers[0]="grafico";
@@ -922,6 +932,11 @@ function getTabellaErrori()
 }
 function openContextMenu(event,n)
 {
+    var all = document.getElementsByClassName("contextMenuRiepilogoPresenzeDitte");
+    for (var i = 0; i < all.length; i++) 
+    {
+        all[i].style.display='none';
+    }
     document.getElementById("contextMenuRiepilogoPresenzeDitte"+n).style.display="inline-block";
 }
 function stampaRiepilogo(n)
@@ -1047,8 +1062,297 @@ function scaricaImmagine(n)
         });
     },2500);
 }
+function getFiltri0()
+{
+    /*
+    <div class="absoluteActionBarFilterMenuFilterContainer" id="absoluteActionBarFilterMenuFilterContainerCodiceArticolo">
+        <label class="absoluteActionBarFilterMenuFilterCheckboxContainer absoluteActionBarFilterMenuFilterCheckboxContainerCodiceArticolo">Tutti
+            <input type="checkbox" onclick="checkCheckboxes('CodiceArticolo')" id="absoluteActionBarFilterMenuFilterCheckboxAllCodiceArticolo" checked="checked">
+            <span class="absoluteActionBarFilterMenuFilterCheckboxCheckmark"></span>
+        </label>
+        <?php
+        
+            $query="SELECT DISTINCT [FAR_ID_ARTICOLO] FROM bi_fatart";
+            $result=sqlsrv_query($conn,$query);
+            if($result==FALSE)
+            {
+                //die(print_r(sqlsrv_errors(),TRUE));
+                echo "error";
+            }
+            else
+            {
+                while($row=sqlsrv_fetch_array($result))
+                {
+                    ?>
+                    <label class="absoluteActionBarFilterMenuFilterCheckboxContainer absoluteActionBarFilterMenuFilterCheckboxContainerCodiceArticolo"><?php echo $row['FAR_ID_ARTICOLO']; ?>
+                        <input type="checkbox" id="checkboxFilterMenuCodiceArticolo<?php echo $row['FAR_ID_ARTICOLO']; ?>" onchange="checkCheckboxAll('CodiceArticolo')" fieldValue="<?php echo $row['FAR_ID_ARTICOLO']; ?>" class="absoluteActionBarFilterMenuCheckboxCodiceArticolo" checked="checked">
+                        <span class="absoluteActionBarFilterMenuFilterCheckboxCheckmark"></span>
+                    </label>
+                    <?php
+                }
+            }
+        
+        ?>
+    </div>
+    */
+
+    var filtriOuterContainer=document.createElement("div");
+    filtriOuterContainer.setAttribute("class","multipleFilterFiltriOuterContainerRiepilogPresenzeDitte");
+
+    //Anni----------------------------------------------------------------------------------------------------
+
+    var anni=[2017,2018,2019,2020,2021,2022];
+    var anniLabel=[2017,2018,2019,2020,2021,2022];
+
+    var filtroMultiploOuterContainer=document.createElement("div");
+    filtroMultiploOuterContainer.setAttribute("class","multipleFilterOuterContainerRiepilogPresenzeDitte");
+
+    var filtroMultiploOuterContainerTitle=document.createElement("div");
+    filtroMultiploOuterContainerTitle.setAttribute("class","multipleFilterOuterContainerTitleRiepilogPresenzeDitte");
+    filtroMultiploOuterContainerTitle.innerHTML="Anno";
+
+    filtroMultiploOuterContainer.appendChild(filtroMultiploOuterContainerTitle);
+
+    var filtroMultiploContainer=document.createElement("div");
+    filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte");
+    var filtroMultiploLabel=document.createElement("label");
+    filtroMultiploLabel.setAttribute("class","multipleFilterLabelRiepilogPresenzeDitte");
+    filtroMultiploLabel.innerHTML="Tutti";
+    var filtroMultiploInput=document.createElement("input");
+    filtroMultiploInput.setAttribute("type","checkbox");
+    filtroMultiploInput.setAttribute("checked","checked");
+    filtroMultiploInput.setAttribute("class","multipleFilterInputRiepilogPresenzeDitte");
+    var filtroMultiploSpan=document.createElement("span");
+    filtroMultiploSpan.setAttribute("class","multipleFilterSpanRiepilogPresenzeDitte");
+
+    filtroMultiploLabel.appendChild(filtroMultiploInput);
+    filtroMultiploLabel.appendChild(filtroMultiploSpan);
+
+    filtroMultiploContainer.appendChild(filtroMultiploLabel);
+
+    filtroMultiploOuterContainer.appendChild(filtroMultiploContainer);
+
+    for(var i=0;i<anni.length;i++)
+    {
+        var anno=anni[i];
+        var annoLabel=anniLabel[i];
+        var filtroMultiploContainer=document.createElement("div");
+        filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte");
+        var filtroMultiploLabel=document.createElement("label");
+        filtroMultiploLabel.setAttribute("class","multipleFilterLabelRiepilogPresenzeDitte");
+        filtroMultiploLabel.setAttribute("filter-value",anno);
+        filtroMultiploLabel.innerHTML=annoLabel;
+        var filtroMultiploInput=document.createElement("input");
+        filtroMultiploInput.setAttribute("type","checkbox");
+        filtroMultiploInput.setAttribute("checked","checked");
+        filtroMultiploInput.setAttribute("class","multipleFilterInputRiepilogPresenzeDitte");
+        var filtroMultiploSpan=document.createElement("span");
+        filtroMultiploSpan.setAttribute("class","multipleFilterSpanRiepilogPresenzeDitte");
+
+        filtroMultiploLabel.appendChild(filtroMultiploInput);
+        filtroMultiploLabel.appendChild(filtroMultiploSpan);
+
+        filtroMultiploContainer.appendChild(filtroMultiploLabel);
+
+        filtroMultiploOuterContainer.appendChild(filtroMultiploContainer);
+    }
+
+    filtriOuterContainer.appendChild(filtroMultiploOuterContainer);
+
+    //------------------------------------------------------------------------------------------------
+
+    //Mesi----------------------------------------------------------------------------------------------------
+    
+    var mesi=[01,02,03,04,05,06,07,08,09,10,11,12];
+    var mesiLabel=["Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre"];
+
+    var filtroMultiploOuterContainer=document.createElement("div");
+    filtroMultiploOuterContainer.setAttribute("class","multipleFilterOuterContainerRiepilogPresenzeDitte");
+
+    var filtroMultiploOuterContainerTitle=document.createElement("div");
+    filtroMultiploOuterContainerTitle.setAttribute("class","multipleFilterOuterContainerTitleRiepilogPresenzeDitte");
+    filtroMultiploOuterContainerTitle.innerHTML="Mese";
+
+    filtroMultiploOuterContainer.appendChild(filtroMultiploOuterContainerTitle);
+
+    var filtroMultiploContainer=document.createElement("div");
+    filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte");
+    var filtroMultiploLabel=document.createElement("label");
+    filtroMultiploLabel.setAttribute("class","multipleFilterLabelRiepilogPresenzeDitte");
+    filtroMultiploLabel.innerHTML="Tutti";
+    var filtroMultiploInput=document.createElement("input");
+    filtroMultiploInput.setAttribute("type","checkbox");
+    filtroMultiploInput.setAttribute("checked","checked");
+    filtroMultiploInput.setAttribute("class","multipleFilterInputRiepilogPresenzeDitte");
+    var filtroMultiploSpan=document.createElement("span");
+    filtroMultiploSpan.setAttribute("class","multipleFilterSpanRiepilogPresenzeDitte");
+
+    filtroMultiploLabel.appendChild(filtroMultiploInput);
+    filtroMultiploLabel.appendChild(filtroMultiploSpan);
+
+    filtroMultiploContainer.appendChild(filtroMultiploLabel);
+
+    filtroMultiploOuterContainer.appendChild(filtroMultiploContainer);
+
+    for(var i=0;i<mesi.length;i++)
+    {
+        var mese=mesi[i];
+        var meseLabel=mesiLabel[i];
+        var filtroMultiploContainer=document.createElement("div");
+        filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte");
+        var filtroMultiploLabel=document.createElement("label");
+        filtroMultiploLabel.setAttribute("class","multipleFilterLabelRiepilogPresenzeDitte");
+        filtroMultiploLabel.setAttribute("filter-value",mese);
+        filtroMultiploLabel.innerHTML=meseLabel;
+        var filtroMultiploInput=document.createElement("input");
+        filtroMultiploInput.setAttribute("type","checkbox");
+        filtroMultiploInput.setAttribute("checked","checked");
+        filtroMultiploInput.setAttribute("class","multipleFilterInputRiepilogPresenzeDitte");
+        var filtroMultiploSpan=document.createElement("span");
+        filtroMultiploSpan.setAttribute("class","multipleFilterSpanRiepilogPresenzeDitte");
+
+        filtroMultiploLabel.appendChild(filtroMultiploInput);
+        filtroMultiploLabel.appendChild(filtroMultiploSpan);
+
+        filtroMultiploContainer.appendChild(filtroMultiploLabel);
+
+        filtroMultiploOuterContainer.appendChild(filtroMultiploContainer);
+    }
+
+    filtriOuterContainer.appendChild(filtroMultiploOuterContainer);
+
+    //------------------------------------------------------------------------------------------------
+
+    $.get("getPontiRiepilogoPresenzeDitte.php",
+    function(response, status)
+    {
+        if(status=="success")
+        {
+            if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
+            {
+                Swal.fire
+                ({
+                    type: 'error',
+                    title: 'Errore',
+                    text: "Se il problema persiste contatta l' amministratore"
+                });
+                console.log(response);
+            }
+            else
+            {
+                var ponti=[];
+                var pontiObj = JSON.parse(response);
+                for (var key in pontiObj)
+                {
+                    ponti.push(pontiObj[key]);							
+                }
+                var pontiLabel=ponti;
+                
+                //Ponti----------------------------------------------------------------------------------------------------
+    
+                var filtroMultiploOuterContainer=document.createElement("div");
+                filtroMultiploOuterContainer.setAttribute("class","multipleFilterOuterContainerRiepilogPresenzeDitte");
+
+                var filtroMultiploOuterContainerTitle=document.createElement("div");
+                filtroMultiploOuterContainerTitle.setAttribute("class","multipleFilterOuterContainerTitleRiepilogPresenzeDitte");
+                filtroMultiploOuterContainerTitle.innerHTML="Ponte";
+
+                filtroMultiploOuterContainer.appendChild(filtroMultiploOuterContainerTitle);
+
+                var filtroMultiploContainer=document.createElement("div");
+                filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte");
+                var filtroMultiploLabel=document.createElement("label");
+                filtroMultiploLabel.setAttribute("class","multipleFilterLabelRiepilogPresenzeDitte");
+                filtroMultiploLabel.innerHTML="Tutti";
+                var filtroMultiploInput=document.createElement("input");
+                filtroMultiploInput.setAttribute("type","checkbox");
+                filtroMultiploInput.setAttribute("checked","checked");
+                filtroMultiploInput.setAttribute("class","multipleFilterInputRiepilogPresenzeDitte");
+                var filtroMultiploSpan=document.createElement("span");
+                filtroMultiploSpan.setAttribute("class","multipleFilterSpanRiepilogPresenzeDitte");
+
+                filtroMultiploLabel.appendChild(filtroMultiploInput);
+                filtroMultiploLabel.appendChild(filtroMultiploSpan);
+
+                filtroMultiploContainer.appendChild(filtroMultiploLabel);
+
+                filtroMultiploOuterContainer.appendChild(filtroMultiploContainer);
+
+                for(var i=0;i<ponti.length;i++)
+                {
+                    var ponte=ponti[i];
+                    var ponteLabel=pontiLabel[i];
+                    var filtroMultiploContainer=document.createElement("div");
+                    filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte");
+                    var filtroMultiploLabel=document.createElement("label");
+                    filtroMultiploLabel.setAttribute("class","multipleFilterLabelRiepilogPresenzeDitte");
+                    filtroMultiploLabel.setAttribute("filter-value",ponte);
+                    filtroMultiploLabel.innerHTML=ponteLabel;
+                    var filtroMultiploInput=document.createElement("input");
+                    filtroMultiploInput.setAttribute("type","checkbox");
+                    filtroMultiploInput.setAttribute("checked","checked");
+                    filtroMultiploInput.setAttribute("class","multipleFilterInputRiepilogPresenzeDitte");
+                    var filtroMultiploSpan=document.createElement("span");
+                    filtroMultiploSpan.setAttribute("class","multipleFilterSpanRiepilogPresenzeDitte");
+
+                    filtroMultiploLabel.appendChild(filtroMultiploInput);
+                    filtroMultiploLabel.appendChild(filtroMultiploSpan);
+
+                    filtroMultiploContainer.appendChild(filtroMultiploLabel);
+
+                    filtroMultiploOuterContainer.appendChild(filtroMultiploContainer);
+                }
+
+                filtriOuterContainer.appendChild(filtroMultiploOuterContainer);
+
+                Swal.fire
+                ({
+                    html:filtriOuterContainer.outerHTML,
+                    showCancelButton:true,
+                    cancelButtonText: "Annulla",
+                    confirmButtonText : "Filtra"
+                }).then((result) => 
+                {
+                    if (result.value)
+                    {
+                        
+                    }
+                })
+            }
+        }
+        else
+            console.log(status);
+    });   
+}
 $("html").click(function(e) 
 {
+    /*console.log(e.target);
+    if($(e.target).is("input[data-name='selectItem']"))
+    {
+        e.preventDefault();
+        return;
+    }
+    if($(e.target).is('.multipleSelectRiepilogoPresenzeDitte'))
+    {
+        e.preventDefault();
+        return;
+    }
+    if($(e.target).is('.placeholder'))
+    {
+        e.preventDefault();
+        return;
+    }
+    if($(e.target).is('.iconFilterRiepilogoPresenzeDitte'))
+    {
+        e.preventDefault();
+        return;
+    }
+    if($(e.target).is('.buttonFilterRiepilogoPresenzeDitte'))
+    {
+        e.preventDefault();
+        return;
+    }*/
+    //----------------------------------------------------------------------------------------------
     if($(e.target).is('.contextMenuRiepilogoPresenzeDitte'))
     {
         e.preventDefault();

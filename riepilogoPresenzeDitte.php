@@ -17,13 +17,31 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css" />
 		<script src="https://unpkg.com/simplebar@latest/dist/simplebar.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 		<script src="tableToExcel.js"></script>
 		<link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css" />
 		<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+		<link href="https://unpkg.com/multiple-select@1.3.1/dist/multiple-select.css" rel="stylesheet">
+		<script src="https://unpkg.com/multiple-select@1.3.1/dist/multiple-select.js"></script>
 		<script src="html2canvas.js"></script>
 		<script src="canvasjs.min.js"></script>
 		<script src="js/riepilogoPresenzeDitte.js"></script>
 		<style>
+			.swal2-title
+			{
+				font-family:'Montserrat',sans-serif;
+				font-size:18px;
+			}
+			.swal2-content
+			{
+				font-family:'Montserrat',sans-serif;
+				font-size:14px;
+			}
+			.swal2-confirm,.swal2-cancel
+			{
+				font-family:'Montserrat',sans-serif;
+				font-size:13px;
+			}
 			.far,.fas,.fal{display:inline-block;float:left;}
 		</style>
 	</head>
@@ -56,11 +74,20 @@
 					<div class="containerRiepilogoPresenzeDitteColumn">
 						<div class="functionRiepilogoPresenzeDitte">
 							<div class="functionListRiepilogoPresenzeDitte">
-								<i class="far fa-chart-bar" title="Operatori" onclick="grafico0=1;getGrafico0('chartContainer0')"></i>
+ 								<div class="visualizzazioneOrigineDatiHintRiepilogoPresenzeDitte">Visualizzazione dati</div>
+								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" onchange="getDatas0(this.value)">
+ 									<option value="grafico_operatori">Grafico operatori</option>
+									<option value="grafico_ore">Grafico ore</option>
+									<option value="tabella_operatori">Tabella operatori</option>
+									<option value="tabella_ore">Tabella ore</option>
+								</select>
+								<button class="buttonFilterRiepilogoPresenzeDitte" onclick="getFiltri0()">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
+
+								<!--<i class="far fa-chart-bar" title="Operatori" onclick="grafico0=1;getGrafico0('chartContainer0')"></i>
 								<i class="fas fa-chart-bar" title="Ore" onclick="grafico0=2;getGrafico0('chartContainer0')"></i>
 								<i class="fal fa-table" title="Operatori" onclick="tabella0=1;getTabella0()"></i>
-								<i class="far fa-table" title="Ore" onclick="tabella0=2;getTabella0()"></i>
-								<select class="selectValoriGrafici" id="selectAnno0" title="Anno" onchange="getGrafico0('chartContainer0')">
+								<i class="far fa-table" title="Ore" onclick="tabella0=2;getTabella0()"></i>-->
+								<div style="display:none"><select class="selectValoriGrafici" id="selectAnno0" title="Anno" onchange="getGrafico0('chartContainer0')">
 									<option value="2017">2017</option>
 									<option value="2018" selected="selected">2018</option>
 									<option value="2019">2019</option>
@@ -82,13 +109,7 @@
 									<option value="11">Novembre</option>
 									<option value="12">Dicembre</option>
 								</select>
-								<button class="selectValoriGrafici" id="selectPonte0" onclick="apriPopupPonti(0)">Ponti<i style="float:right;margin-top:-8px;font-size:95%" class="fas fa-sort-down"></i></button>
-								<!--<select class="selectValoriGrafici" id="selectPonte0" title="Ponte" onchange="getGrafico0('chartContainer0')">
-									<option value="%">Tutti</option>
-									<option value="gen">gen</option>
-									<option value="pref">pref</option>
-									<?php getListaPonti($conn); ?>
-								</select>-->
+								<button class="selectValoriGrafici" id="selectPonte0" onclick="apriPopupPonti(0)">Ponti<i style="float:right;margin-top:-8px;font-size:95%" class="fas fa-sort-down"></i></button></div>
 							</div>
 							<div class="functionMenuRiepilogoPresenzeDitte">
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,0)"></i>
