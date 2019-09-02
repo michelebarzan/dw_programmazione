@@ -24,6 +24,8 @@
 		<link href="https://unpkg.com/multiple-select@1.3.1/dist/multiple-select.css" rel="stylesheet">
 		<script src="https://unpkg.com/multiple-select@1.3.1/dist/multiple-select.js"></script>
 		<script src="html2canvas.js"></script>
+		<link rel="stylesheet" href="js_libraries/spinners/spinner.css" />
+		<script src="js_libraries/spinners/spinner.js"></script>
 		<script src="canvasjs.min.js"></script>
 		<script src="js/riepilogoPresenzeDitte.js"></script>
 		<style>
@@ -45,8 +47,9 @@
 			.far,.fas,.fal{display:inline-block;float:left;}
 		</style>
 	</head>
-	<body onload="aggiungiNotifica('Stai lavorando sulla commessa <?php echo $_SESSION['commessa']; ?>');grafico0=1;getGrafico0('chartContainer0');grafico1=2;getGrafico1('chartContainer1');grafico2=1;getGrafico2('chartContainer2');grafico3=1;getGrafico3('chartContainer3');getTabellaErrori();getTabella4()">
+	<body onload="aggiungiNotifica('Stai lavorando sulla commessa <?php echo $_SESSION['commessa']; ?>');grafico0=1;getGrafico0('chartContainer0');grafico1=2;getGrafico1('chartContainer1');grafico2=1;getGrafico2('chartContainer2');grafico3=1;getGrafico3('chartContainer3');getTabellaErrori();getTabella4();removeCircleSpinner()">
 		<?php include('struttura.php'); ?>
+		<script>newCircleSpinner("Caricamento in corso...")</script>
 		<div class="modalPontiRiepilogoPresenzeDitteContainer" id="modalPontiRiepilogoPresenzeDitteContainer">
 			<div class="modalPontiRiepilogoPresenzeDitteContainerMiddle">
 				<div class="modalPontiRiepilogoPresenzeDitteContainerInner">
@@ -70,51 +73,27 @@
 		<a id="imageContainer2" style="display:none" download></a>
 		<div style="position: absolute; left: 50%;top:90px;width:100%">
 			<div id="containerRiepilogoPresenzeDitte">
-				<div class="containerRiepilogoPresenzeDitteRow">
-					<div class="containerRiepilogoPresenzeDitteColumn">
+				<div class="containerRiepilogoPresenzeDitteRow" id="containerRiepilogoPresenzeDitteRow0">
+					<div class="containerRiepilogoPresenzeDitteColumn" id="containerRiepilogoPresenzeDitteColumn0">
 						<div class="functionRiepilogoPresenzeDitte">
 							<div class="functionListRiepilogoPresenzeDitte">
  								<div class="visualizzazioneOrigineDatiHintRiepilogoPresenzeDitte">Visualizzazione dati</div>
-								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" onchange="getDatas0(this.value)">
+								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" id="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte0" onchange="getDatas0(this.value)">
  									<option value="grafico_operatori">Grafico operatori</option>
 									<option value="grafico_ore">Grafico ore</option>
 									<option value="tabella_operatori">Tabella operatori</option>
 									<option value="tabella_ore">Tabella ore</option>
 								</select>
-								<button class="buttonFilterRiepilogoPresenzeDitte" onclick="getFiltri0()">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
-
-								<!--<i class="far fa-chart-bar" title="Operatori" onclick="grafico0=1;getGrafico0('chartContainer0')"></i>
-								<i class="fas fa-chart-bar" title="Ore" onclick="grafico0=2;getGrafico0('chartContainer0')"></i>
-								<i class="fal fa-table" title="Operatori" onclick="tabella0=1;getTabella0()"></i>
-								<i class="far fa-table" title="Ore" onclick="tabella0=2;getTabella0()"></i>-->
-								<div style="display:none"><select class="selectValoriGrafici" id="selectAnno0" title="Anno" onchange="getGrafico0('chartContainer0')">
-									<option value="2017">2017</option>
-									<option value="2018" selected="selected">2018</option>
-									<option value="2019">2019</option>
-									<option value="2020">2020</option>
-									<option value="2021">2021</option>
-								</select>
-								<select class="selectValoriGrafici" id="selectMese0" title="Mese" onchange="getGrafico0('chartContainer0')">
-									<option value="%">Tutti</option>
-									<option value="1">Gennaio</option>
-									<option value="2">Febbraio</option>
-									<option value="3">Marzo</option>
-									<option value="4">Aprile</option>
-									<option value="5">Maggio</option>
-									<option value="6">Giugno</option>
-									<option value="7">Luglio</option>
-									<option value="8">Agosto</option>
-									<option value="9">Settembre</option>
-									<option value="10">Ottobre</option>
-									<option value="11">Novembre</option>
-									<option value="12">Dicembre</option>
-								</select>
-								<button class="selectValoriGrafici" id="selectPonte0" onclick="apriPopupPonti(0)">Ponti<i style="float:right;margin-top:-8px;font-size:95%" class="fas fa-sort-down"></i></button></div>
+								<button class="buttonFilterRiepilogoPresenzeDitte" id="buttonFilterRiepilogoPresenzeDitte0" onclick="getFiltri(0)">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
 							</div>
 							<div class="functionMenuRiepilogoPresenzeDitte">
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,0)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte0"  class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
+										<tr onclick="toggleFullscreenChart(0,0,this)">
+											<td><i class="fad fa-expand-wide" ></i></td>
+											<td>Estendi</td>
+										</tr>
 										<tr onclick="scaricaExcel(myTableRiepilogoPresenzeDitte0)">
 											<td><i class="fal fa-file-excel" title="Scarica Excel riepilogo" ></i></td>
 											<td>Scarica Excel riepilogo</td>
@@ -133,35 +112,25 @@
 						</div>
 						<div id="chartContainer0" class="chartContainer"></div>
 					</div>
-					<div class="containerRiepilogoPresenzeDitteColumn">
+					<div class="containerRiepilogoPresenzeDitteColumn" id="containerRiepilogoPresenzeDitteColumn1">
 						<div class="functionRiepilogoPresenzeDitte">
 							<div class="functionListRiepilogoPresenzeDitte">
-								<i class="fas fa-chart-area" title="Operatori" onclick="grafico1=2;getGrafico1('chartContainer1')"></i>
-								<i class="far fa-chart-area" title="Ore" onclick="grafico1=1;getGrafico1('chartContainer1')"></i>
-								<i class="fal fa-table" onclick="getTabella1()"></i>
-								<select class="selectValoriGrafici" id="selectAnno1" title="Anno" onchange="getGrafico1('chartContainer1')">
-									<option value="2017">2017</option>
-									<option value="2018" selected="selected">2018</option>
-									<option value="2019">2019</option>
-									<option value="2020">2020</option>
-									<option value="2021">2021</option>
+								<div class="visualizzazioneOrigineDatiHintRiepilogoPresenzeDitte">Visualizzazione dati</div>
+								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" id="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte1" onchange="getDatas1(this.value)">
+ 									<option value="grafico_operatori">Grafico giorni</option>
+									<option value="grafico_ore">Grafico ore</option>
+									<option value="tabella">Tabella</option>
 								</select>
-								<select class="selectValoriGrafici" id="selectDitta1" title="Ditta" onchange="getGrafico1('chartContainer1')">
-									<option value="%">Tutte</option>
-									<?php getListaDitte($conn); ?>
-								</select>
-								<button class="selectValoriGrafici" id="selectPonte1" onclick="apriPopupPonti(1)">Ponti<i style="float:right;margin-top:-8px;font-size:95%" class="fas fa-sort-down"></i></button>
-								<!--<select class="selectValoriGrafici" id="selectPonte1" title="Ponte" onchange="getGrafico1('chartContainer1')">
-									<option value="%">Tutti</option>
-									<option value="gen">gen</option>
-									<option value="pref">pref</option>
-									<?php getListaPonti($conn); ?>
-								</select>-->
+								<button class="buttonFilterRiepilogoPresenzeDitte" id="buttonFilterRiepilogoPresenzeDitte1" onclick="getFiltri(1)">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
 							</div>
 							<div class="functionMenuRiepilogoPresenzeDitte">
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,1)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte1"  class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
+										<tr onclick="toggleFullscreenChart(1,0,this)">
+											<td><i class="fad fa-expand-wide" ></i></td>
+											<td>Estendi</td>
+										</tr>
 										<tr onclick="scaricaExcel(myTableRiepilogoPresenzeDitte1)">
 											<td><i class="fal fa-file-excel" title="Scarica Excel riepilogo" ></i></td>
 											<td>Scarica Excel riepilogo</td>
@@ -180,45 +149,17 @@
 						</div>
 						<div id="chartContainer1" class="chartContainer"></div>
 					</div>
-					<div class="containerRiepilogoPresenzeDitteColumn">
+					<div class="containerRiepilogoPresenzeDitteColumn" id="containerRiepilogoPresenzeDitteColumn2">
 						<div class="functionRiepilogoPresenzeDitte">
 							<div class="functionListRiepilogoPresenzeDitte">
-								<i class="far fa-chart-bar" title="Operatori" onclick="grafico2=1;getGrafico2('chartContainer2')"></i>
-								<i class="fas fa-chart-bar" title="Ore" onclick="grafico2=2;getGrafico2('chartContainer2')"></i>
-								<i class="fal fa-table" title="Operatori" onclick="tabella2=1;getTabella2();"></i>
-								<i class="far fa-table" title="Ore" onclick="tabella2=2;getTabella2()"></i>
-								<select class="selectValoriGrafici" id="selectAnno2" title="Anno" onchange="getGrafico2('chartContainer2')">
-									<option value="2017">2017</option>
-									<option value="2018" selected="selected">2018</option>
-									<option value="2019">2019</option>
-									<option value="2020">2020</option>
-									<option value="2021">2021</option>
+								<div class="visualizzazioneOrigineDatiHintRiepilogoPresenzeDitte">Visualizzazione dati</div>
+								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" id="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte2" onchange="getDatas2(this.value)">
+									<option value="grafico_operatori">Grafico operatori</option>
+									<option value="grafico_ore">Grafico ore</option>
+									<option value="tabella_operatori">Tabella operatori</option>
+									<option value="tabella_ore">Tabella ore</option>
 								</select>
-								<select class="selectValoriGrafici" id="selectDitta2" title="Ditta" onchange="getGrafico2('chartContainer2')">
-									<option value="%">Tutte</option>
-									<?php getListaDitte($conn); ?>
-								</select>
-								<button class="selectValoriGrafici" id="selectPonte2" onclick="apriPopupPonti(2)">Ponti<i style="float:right;margin-top:-8px;font-size:95%" class="fas fa-sort-down"></i></button>
-								<!--<select class="selectValoriGrafici" id="selectPonte2" title="Ponte" onchange="getGrafico2('chartContainer2')">
-									<option value="%">Tutti</option>
-									<option value="gen">gen</option>
-									<option value="pref">pref</option>
-									<?php getListaPonti($conn); ?>
-								</select>-->
-								<select class="selectValoriGrafici" id="selectMese2" title="Mese" onchange="getGrafico2('chartContainer2')">
-									<option value="1">Gennaio</option>
-									<option value="2">Febbraio</option>
-									<option value="3">Marzo</option>
-									<option value="4">Aprile</option>
-									<option value="5">Maggio</option>
-									<option value="6">Giugno</option>
-									<option value="7">Luglio</option>
-									<option value="8">Agosto</option>
-									<option value="9">Settembre</option>
-									<option value="10">Ottobre</option>
-									<option value="11">Novembre</option>
-									<option value="12">Dicembre</option>
-								</select>
+								<button class="buttonFilterRiepilogoPresenzeDitte" id="buttonFilterRiepilogoPresenzeDitte2" onclick="getFiltri(2)">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
 								<input type="checkbox" class="css-checkbox" id="checkbox2" onchange="tabella2=1;getTabella2();" checked="checked"/>
 								<label for="checkbox2" id="checkboxLabel2" name="checkbox1_lbl" class="css-label lite-gray-check"><div>Nomi</div></label>
 							</div>
@@ -226,6 +167,10 @@
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,2)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte2" style="right:30" class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
+										<tr onclick="toggleFullscreenChart(2,0,this)">
+											<td><i class="fad fa-expand-wide" ></i></td>
+											<td>Estendi</td>
+										</tr>
 										<tr onclick="scaricaExcel(myTableRiepilogoPresenzeDitte2)">
 											<td><i class="fal fa-file-excel" title="Scarica Excel riepilogo" ></i></td>
 											<td>Scarica Excel riepilogo</td>
@@ -245,51 +190,26 @@
 						<div id="chartContainer2" class="chartContainer"></div>
 					</div>
 				</div>
-				<div class="containerRiepilogoPresenzeDitteRow">
-					<div class="containerRiepilogoPresenzeDitteColumn">
+				<div class="containerRiepilogoPresenzeDitteRow" id="containerRiepilogoPresenzeDitteRow1">
+					<div class="containerRiepilogoPresenzeDitteColumn" id="containerRiepilogoPresenzeDitteColumn3">
 						<div class="functionRiepilogoPresenzeDitte">
 							<div class="functionListRiepilogoPresenzeDitte">
-								<i class="fas fa-chart-area" title="Media mesi" onclick="grafico3=1;getGrafico3('chartContainer3')"></i>
-								<i class="fas fa-chart-bar" title="Media ditte" onclick="grafico3=2;getGrafico3('chartContainer3')"></i>
-								<i class="fal fa-table" onclick="getTabella3();"></i>
-								<select class="selectValoriGrafici" id="selectAnno3" title="Anno" onchange="getGrafico3('chartContainer3')">
-									<option value="2017">2017</option>
-									<option value="2018" selected="selected">2018</option>
-									<option value="2019">2019</option>
-									<option value="2020">2020</option>
-									<option value="2021">2021</option>
+								<div class="visualizzazioneOrigineDatiHintRiepilogoPresenzeDitte">Visualizzazione dati</div>
+								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" id="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte3" onchange="getDatas3(this.value)">
+ 									<option value="media_mesi">Media mesi</option>
+									<option value="media_ditte">Media ditte</option>
+									<option value="tabella">Tabella</option>
 								</select>
-								<select class="selectValoriGrafici" id="selectDitta3" title="Ditta" onchange="getGrafico3('chartContainer3')">
-									<option value="%">Tutte</option>
-									<?php getListaDitte($conn); ?>
-								</select>
-								<button class="selectValoriGrafici" id="selectPonte3" onclick="apriPopupPonti(3)">Ponti<i style="float:right;margin-top:-8px;font-size:95%" class="fas fa-sort-down"></i></button>
-								<!--<select class="selectValoriGrafici" id="selectPonte3" title="Ponte" onchange="getGrafico3('chartContainer3')">
-									<option value="%">Tutti</option>
-									<option value="gen">gen</option>
-									<option value="pref">pref</option>
-									<?php getListaPonti($conn); ?>
-								</select>-->
-								<select class="selectValoriGrafici" id="selectMese3" title="Mese" onchange="getGrafico3('chartContainer3')">
-									<option value="%">Tutti</option>
-									<option value="1">Gennaio</option>
-									<option value="2">Febbraio</option>
-									<option value="3">Marzo</option>
-									<option value="4">Aprile</option>
-									<option value="5">Maggio</option>
-									<option value="6">Giugno</option>
-									<option value="7">Luglio</option>
-									<option value="8">Agosto</option>
-									<option value="9">Settembre</option>
-									<option value="10">Ottobre</option>
-									<option value="11">Novembre</option>
-									<option value="12">Dicembre</option>
-								</select>
+								<button class="buttonFilterRiepilogoPresenzeDitte" id="buttonFilterRiepilogoPresenzeDitte3" onclick="getFiltri(3)">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
 							</div>
 							<div class="functionMenuRiepilogoPresenzeDitte">
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,3)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte3"  class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
+										<tr onclick="toggleFullscreenChart(3,1,this)">
+											<td><i class="fad fa-expand-wide" ></i></td>
+											<td>Estendi</td>
+										</tr>
 										<tr onclick="scaricaExcel(myTableRiepilogoPresenzeDitte3)">
 											<td><i class="fal fa-file-excel" title="Scarica Excel riepilogo" ></i></td>
 											<td>Scarica Excel riepilogo</td>
@@ -308,7 +228,8 @@
 						</div>
 						<div id="chartContainer3" class="chartContainer"></div>
 					</div>
-					<div id="containerTabellaErrori" class="containerRiepilogoPresenzeDitteDoubleColumn">
+					<!--<div id="containerTabellaErrori" class="containerRiepilogoPresenzeDitteDoubleColumn" id="containerRiepilogoPresenzeDitteColumn4">-->
+					<div class="containerRiepilogoPresenzeDitteDoubleColumn" id="containerRiepilogoPresenzeDitteColumn4">
 						<div class="functionRiepilogoPresenzeDitte" id="functionRiepilogoPresenzeDitteErrori">
 							<div class="functionListRiepilogoPresenzeDitte">
 								<span>Riepilogo errori di registrazione</span>
@@ -317,6 +238,10 @@
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,4)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte4" style="right:30" class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
+										<tr onclick="toggleFullscreenChart(4,1,this)">
+											<td><i class="fad fa-expand-wide" ></i></td>
+											<td>Estendi</td>
+										</tr>
 										<tr onclick="scaricaExcel('myTableErroriPresenzeDitte')">
 											<td><i class="fal fa-file-excel" title="Scarica Excel riepilogo" ></i></td>
 											<td>Scarica Excel riepilogo</td>
@@ -332,8 +257,8 @@
 						<div id="chartContainer4" class="chartContainerDoubleTriple"></div>
 					</div>
 				</div>
-				<div class="containerRiepilogoPresenzeDitteRow">
-					<div class="containerRiepilogoPresenzeDitteTripleColumn">
+				<div class="containerRiepilogoPresenzeDitteRow" id="containerRiepilogoPresenzeDitteRow2">
+					<div class="containerRiepilogoPresenzeDitteTripleColumn" id="containerRiepilogoPresenzeDitteColumn5">
 						<div class="functionRiepilogoPresenzeDitte" id="functionRiepilogoPresenzeDitte5">
 							<div class="functionListRiepilogoPresenzeDitte">
 								<span>Dettaglio media operatori delle ditte</span>
@@ -342,6 +267,10 @@
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,5)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte5" style="right:30" class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
+										<tr onclick="toggleFullscreenChart(5,2,this)">
+											<td><i class="fad fa-expand-wide" ></i></td>
+											<td>Estendi</td>
+										</tr>
 										<tr onclick="scaricaExcel('myTableDettaglioMediaPresenzeDitte')">
 											<td><i class="fal fa-file-excel" title="Scarica Excel riepilogo" ></i></td>
 											<td>Scarica Excel riepilogo</td>

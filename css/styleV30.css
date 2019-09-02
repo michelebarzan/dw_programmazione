@@ -1367,6 +1367,7 @@ html
 	height:280px;
 	margin-top:10px;
 	margin-bottom:10px;
+	overflow: auto;
 }
 .chartContainerDoubleTriple
 {
@@ -1480,15 +1481,22 @@ html
 .multipleFilterOuterContainerRiepilogPresenzeDitte
 {
 	margin:10px;
-	width:70px;
+	width:auto;
 	float:left;
 	display: block;
+	
+	box-sizing:border-box;
+	padding-left:10px;
+	padding-right:10px;
+	padding-bottom:5px;
+	border: 3px solid #ddd;
 }
 .multipleFilterOuterContainerTitleRiepilogPresenzeDitte
 {
-	width:100%;
-	height:15px;
-	line-height: 15px;
+	width:calc(100% + 20px);
+	margin-left:-10px;
+	height:20px;
+	line-height: 16px;
 	font-family: 'Montserrat',sans-serif;
 	font-size: 12px;
 	font-weight: bold;
@@ -1497,9 +1505,10 @@ html
 	text-align:left;
 	background-color:#ddd;
 	box-sizing: border-box;
-	padding-left: 5px;
+	padding-left: 10px;
 	padding-right: 5px;
 	margin-bottom:5px;
+	padding-bottom:5px;
 }
 .multipleFilterContainerRiepilogPresenzeDitte {
 	display: block;
@@ -1579,7 +1588,7 @@ html
 	-ms-transform: rotate(45deg);
 	transform: rotate(45deg);
   }
-/*CHECKBOX
+CHECKBOX
 label 
 {
 	-webkit-touch-callout: none;
@@ -1683,7 +1692,7 @@ input[type=checkbox].css-checkbox.lrg + label.css-label.lrg
 input[type=checkbox].css-checkbox.lrg:checked + label.css-label.lrg
 {
     background-position: 0 -20px;
-}*/
+}
 /*attivita programmate--------------------------------------------------------------------------------------------*/
 #containerGestioneAttivitaProgrammate
 {
