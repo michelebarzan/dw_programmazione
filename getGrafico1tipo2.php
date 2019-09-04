@@ -5,7 +5,12 @@
 	$anni=json_decode($_REQUEST['JSONanni']);
 	$inAnni=implode("','",$anni);
 
-	$ditte=json_decode($_REQUEST['JSONditte']);
+	$ditteEnc=json_decode($_REQUEST['JSONditte']);
+	$ditte=[];
+	foreach ($ditteEnc as $ditta)
+	{ 
+		array_push($ditte,urldecode($ditta));
+	} 
 	$inDitte=implode("','",$ditte);
 
 	$ponti=json_decode($_REQUEST['JSONponti']);
@@ -21,7 +26,7 @@
 			dbo.cantiere_ditte ON dbo.cantiere_ponti_ditte_registrazioni.ditta = dbo.cantiere_ditte.id_ditta
 			WHERE (dbo.cantiere_registrazioni.commessa = ".$_SESSION['id_commessa'].") AND (YEAR(dbo.cantiere_registrazioni.data) IN ('".$inAnni."')) AND (dbo.cantiere_ponti_ditte_registrazioni.ponte IN ('".$inPonti."')) AND 
 			(dbo.cantiere_ditte.nome  IN ('".$inDitte."'))) AS derivedtbl_1
-			GROUP BY mese";
+			GROUP BY mese ORDER BY mese";
 	
 	$result2=sqlsrv_query($conn,$query2);
 	if($result2==FALSE)
@@ -36,5 +41,5 @@
 			echo $row2["mese"]."|".$row2["nOperatori"]."%";
 		}
 	}
-	
+	//echo $query2;
 ?>

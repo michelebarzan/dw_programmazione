@@ -18,5 +18,7 @@
             array_push($ponti,$row2["ponte"]);
 		}
 	}
+	array_push($ponti,"gen");
+	array_push($ponti,"pref");
 	echo json_encode($ponti);
 ?>

@@ -79,7 +79,7 @@
 							<div class="functionListRiepilogoPresenzeDitte">
  								<div class="visualizzazioneOrigineDatiHintRiepilogoPresenzeDitte">Visualizzazione dati</div>
 								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" id="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte0" onchange="getDatas0(this.value)">
- 									<option value="grafico_operatori">Grafico operatori</option>
+ 									<option value="grafico_operatori">Grafico giorni</option>
 									<option value="grafico_ore">Grafico ore</option>
 									<option value="tabella_operatori">Tabella operatori</option>
 									<option value="tabella_ore">Tabella ore</option>

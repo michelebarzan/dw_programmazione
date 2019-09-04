@@ -95,7 +95,12 @@ GROUP BY mese";
 	$anni=json_decode($_REQUEST['JSONanni']);
 	$inAnni=implode("','",$anni);
 
-	$ditte=json_decode($_REQUEST['JSONditte']);
+	$ditteEnc=json_decode($_REQUEST['JSONditte']);
+	$ditte=[];
+	foreach ($ditteEnc as $ditta)
+	{ 
+		array_push($ditte,urldecode($ditta));
+	} 
 	$inDitte=implode("','",$ditte);
 
 	$ponti=json_decode($_REQUEST['JSONponti']);
@@ -111,8 +116,7 @@ GROUP BY mese";
 			dbo.cantiere_ditte ON dbo.cantiere_ponti_ditte_registrazioni.ditta = dbo.cantiere_ditte.id_ditta
 			WHERE (dbo.cantiere_registrazioni.commessa = ".$_SESSION['id_commessa'].") AND (YEAR(dbo.cantiere_registrazioni.data) IN ('".$inAnni."')) AND (dbo.cantiere_ponti_ditte_registrazioni.ponte IN ('".$inPonti."'))) AS derivedtbl_1
 			WHERE (nomeDitta IN ('".$inDitte."'))
-			GROUP BY nomeDitta, data, mese
-			ORDER BY nomeDitta) AS derivedtbl_2
+			GROUP BY nomeDitta, data, mese) AS derivedtbl_2
 			GROUP BY mese";
 	$result2=sqlsrv_query($conn,$query2);
 	if($result2==FALSE)
@@ -127,5 +131,5 @@ GROUP BY mese";
 			echo $row2["mese"]."|".$row2["mediaOperatori"]."%";
 		}
 	}
-	
+	//echo $query2;
 ?>

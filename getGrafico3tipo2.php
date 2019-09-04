@@ -128,5 +128,4 @@
 			echo $row2["nomeDitta"]."|".$row2["mediaOperatori"]."%";
 		}
 	}
-
 ?>

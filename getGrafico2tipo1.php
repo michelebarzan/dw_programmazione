@@ -95,13 +95,18 @@ ORDER BY nomeDitta";
 	$ponti=json_decode($_REQUEST['JSONponti']);
 	$inPonti=implode("','",$ponti);
 
-	$ditte=json_decode($_REQUEST['JSONditte']);
+	$ditteEnc=json_decode($_REQUEST['JSONditte']);
+	$ditte=[];
+	foreach ($ditteEnc as $ditta)
+	{ 
+		array_push($ditte,urldecode($ditta));
+	} 
 	$inDitte=implode("','",$ditte);
 
 	$mesi=json_decode($_REQUEST['JSONmesi']);
 	$inMesi=implode("','",$mesi);
 	
-	$query2="SELECT TOP (100) PERCENT COUNT(*) AS nOperatori, nomeDitta, data, mese
+	$query2="SELECT COUNT(*) AS nOperatori, data, mese
 				FROM (SELECT dbo.cantiere_ditte.nome AS nomeDitta, dbo.cantiere_operatori_ditte.nome, dbo.cantiere_operatori_ditte.cognome, MONTH(dbo.cantiere_registrazioni.data) AS mese, 
 				dbo.cantiere_ponti_ditte_registrazioni.ponte, YEAR(dbo.cantiere_registrazioni.data) AS anno, dbo.cantiere_registrazioni.commessa, dbo.cantiere_registrazioni.data
 				FROM dbo.cantiere_ponti_ditte_registrazioni INNER JOIN
@@ -111,8 +116,7 @@ ORDER BY nomeDitta";
 				WHERE (dbo.cantiere_registrazioni.commessa = ".$_SESSION['id_commessa'].") AND (YEAR(dbo.cantiere_registrazioni.data) IN ('".$inAnni."')) AND (dbo.cantiere_ponti_ditte_registrazioni.ponte IN ('".$inPonti."')) AND 
 				(MONTH(dbo.cantiere_registrazioni.data) IN ('".$inMesi."'))) AS derivedtbl_1
 				WHERE nomeDitta IN ('".$inDitte."')
-				GROUP BY nomeDitta, data, mese
-				ORDER BY nomeDitta";
+				GROUP BY data, mese";
 	$result2=sqlsrv_query($conn,$query2);
 	if($result2==FALSE)
 	{
@@ -126,5 +130,4 @@ ORDER BY nomeDitta";
 			echo $row2["data"]->format('d/m/Y')."|".$row2["nOperatori"]."%";
 		}
 	}
-
 ?>
