@@ -1471,6 +1471,64 @@ html
 {
 	color:black;
 }
+.valoriFiltriContainer
+{
+	width:100%;
+	box-sizing: border-box;
+	text-align: left;
+}
+.valoriFiltriListContainer
+{
+	float:left;
+	display: block;
+	width:calc(100% - 20px);
+	height:auto;
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	margin:10px;
+	padding-top: 5px;
+	box-sizing: border-box;
+	padding-bottom: 5px;
+}
+.valoriFiltriListTitle
+{
+	font-size: 14px;
+	font-family: 'Montserrat',sans-serif;
+	box-sizing: border-box;
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	text-transform: capitalize;
+	font-weight: bold;
+	text-decoration: underline;
+	color:black;
+}
+.valoriFiltriList
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+} 
+.valoriFiltriListItem
+{
+	float: left;
+}
+.valoriFiltriListItem span
+{
+	display: block;
+	color: white;
+	text-align: center;
+	font-size: 12px;
+	font-family: 'Montserrat',sans-serif;
+	box-sizing: border-box;
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	text-decoration: none;
+	color:gray;
+}
 /*------------------------------------------------------------------*/
 .multipleFilterFiltriOuterContainerRiepilogPresenzeDitte
 {

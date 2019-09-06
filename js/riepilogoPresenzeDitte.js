@@ -1118,40 +1118,67 @@ function scaricaExcel(tabella)
     }
     tableToExcel(tabella);
 }
-function scaricaImmagine(n)
+function scaricaImmagine(n,row)
 {
     var all = document.getElementsByClassName("contextMenuRiepilogoPresenzeDitte");
     for (var i = 0; i < all.length; i++) 
     {
         all[i].style.display='none';
     }
-    if(n==0)
-    {
-        getGrafico0("imageContainerHD");
-    }
-    if(n==1)
-    {
-        getGrafico1("imageContainerHD");
-    }
-    if(n==2)
-    {
-        getGrafico2("imageContainerHD");
-    }
-    if(n==3)
-    {
-        getGrafico3("imageContainerHD");
-    }
+    if(!fullscreen)
+        toggleFullscreen=true;
+    else
+        toggleFullscreen=false;
+    newCircleSpinner("Caricamento in corso...")
+    var rowButton=document.getElementById("rowButtonRiepilogoPresenzeDitte"+n);
+    if(toggleFullscreen)
+        toggleFullscreenChart(n,row,rowButton);
+    //chartArray[n].axisX.labelAngle=45;
+    //chartArray[n].options.axisX.labelFontSize=12;
+    //chartArray[n].render();
     setTimeout(function()
     {
-        html2canvas(document.getElementById("imageContainerHD")).then(function(canvas) 
+        html2canvas(document.getElementById("containerRiepilogoPresenzeDitteColumn"+n)).then(function(canvas) 
         {
             document.getElementById("imageContainer").appendChild(canvas);
             var img    = canvas.toDataURL("image/png");
             document.getElementById("imageContainer2").setAttribute('href', img);
+            //getImageFromUrl(img, createPDF);
             document.getElementById("imageContainer2").click();
         });
-    },2500);
+    },1000);
+    setTimeout(function()
+    {
+        if(toggleFullscreen)
+            toggleFullscreenChart(n,row,rowButton);
+        removeCircleSpinner();
+    },2000);
 }
+/*var getImageFromUrl = function(url, callback) {
+    var img = new Image();
+
+    img.onError = function() {
+        alert('Cannot load image: "'+url+'"');
+    };
+    img.onload = function() {
+        callback(img);
+    };
+    img.src = url;
+}
+
+
+var createPDF = function(imgData) {
+    var doc = new jsPDF();
+
+
+
+    doc.addImage(imgData, 'JPEG', 10, 10, 50, 50, 'monkey');
+    doc.addImage('monkey', 70, 10, 100, 120); // use the cached 'monkey' image, JPEG is optional regardless
+
+
+
+    doc.output('datauri');
+}*/
 async function getFiltri(n)
 {
     var filtriOuterContainer=document.createElement("div");
@@ -1223,6 +1250,8 @@ async function getFiltri(n)
                     getDatas3(document.getElementById("visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte3").value);
                     break;
             }
+            if(fullscreen)
+                getListActiveFilters(n);
         }
     })
 }
@@ -1804,14 +1833,19 @@ function toggleFullscreenChart(n,row,rowButton)
         document.getElementById("chartContainer"+n).style.width="99%";
         document.getElementById("chartContainer"+n).style.height="400px";
 
-        document.getElementById("containerRiepilogoPresenzeDitteRow"+row).style.height="600px";
+        //document.getElementById("containerRiepilogoPresenzeDitteRow"+row).style.height="600px";
         document.getElementById("containerRiepilogoPresenzeDitteRow"+row).style.width="100%";
 
+        if(containers[n]=="grafico")
+            getListActiveFilters(n);
     }
     else
     {
         rowButton.childNodes[1].innerHTML="<i class='fad fa-expand-wide'></i>";
         rowButton.childNodes[3].innerHTML="Estendi";
+        
+        if(containers[n]=="grafico")
+            document.getElementById("valoriFiltriContainer"+n).remove();
 
         for (var i = 0; i < containers.length; i++)
         {
@@ -1832,7 +1866,7 @@ function toggleFullscreenChart(n,row,rowButton)
         document.getElementById("chartContainer"+n).style.width="";
         document.getElementById("chartContainer"+n).style.height="";
 
-        document.getElementById("containerRiepilogoPresenzeDitteRow"+row).style.height="";
+        //document.getElementById("containerRiepilogoPresenzeDitteRow"+row).style.height="";
         document.getElementById("containerRiepilogoPresenzeDitteRow"+row).style.width="";
 
         for (var i = 0; i < nGrafici.length; i++)
@@ -1844,4 +1878,53 @@ function toggleFullscreenChart(n,row,rowButton)
     if(chartArray[n]!=null)
         chartArray[n].render();
     fullscreen=!fullscreen;
+}
+function getListActiveFilters(n)
+{
+    try
+    {
+        document.getElementById("valoriFiltriContainer"+n).remove();
+    }
+    catch (error){}
+    
+    var valoriFiltriContainer=document.createElement("div");
+    valoriFiltriContainer.setAttribute("class","valoriFiltriContainer");
+    valoriFiltriContainer.setAttribute("id","valoriFiltriContainer"+n);
+
+    filters.forEach(function(filter)
+    {
+        if(activeFilters[n][filter].length>0)
+        {
+            var valoriFiltriListContainer=document.createElement("div");
+            valoriFiltriListContainer.setAttribute("class","valoriFiltriListContainer");
+
+            var valoriFiltriListTitle=document.createElement("div");
+            valoriFiltriListTitle.setAttribute("class","valoriFiltriListTitle");
+            valoriFiltriListTitle.innerHTML=filter;
+
+            var valoriFiltriList=document.createElement("ul");
+            valoriFiltriList.setAttribute("class","valoriFiltriList");
+
+            for(var i=0;i<activeFilters[n][filter].length;i++)
+            {
+                var valoriFiltriListItem=document.createElement("li");
+                valoriFiltriListItem.setAttribute("class","valoriFiltriListItem");
+
+                var valoriFiltriListItemSpan=document.createElement("span");
+                valoriFiltriListItemSpan.innerHTML=activeFilters[n][filter][i];
+
+                valoriFiltriListItem.appendChild(valoriFiltriListItemSpan);
+
+                valoriFiltriList.appendChild(valoriFiltriListItem);
+            }
+
+            valoriFiltriListContainer.appendChild(valoriFiltriListTitle);
+            
+            valoriFiltriListContainer.appendChild(valoriFiltriList);
+
+            valoriFiltriContainer.appendChild(valoriFiltriListContainer);
+        }
+    });
+
+    document.getElementById("containerRiepilogoPresenzeDitteColumn"+n).appendChild(valoriFiltriContainer);
 }

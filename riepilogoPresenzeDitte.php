@@ -28,6 +28,7 @@
 		<script src="js_libraries/spinners/spinner.js"></script>
 		<script src="canvasjs.min.js"></script>
 		<script src="js/riepilogoPresenzeDitte.js"></script>
+		<!--<script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>-->
 		<style>
 			.swal2-title
 			{
@@ -90,7 +91,7 @@
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,0)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte0"  class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
-										<tr onclick="toggleFullscreenChart(0,0,this)">
+										<tr id="rowButtonRiepilogoPresenzeDitte0" onclick="toggleFullscreenChart(0,0,this)">
 											<td><i class="fad fa-expand-wide" ></i></td>
 											<td>Estendi</td>
 										</tr>
@@ -102,7 +103,7 @@
 											<td><i class="fal fa-print" title="Stampa riepilogo" ></i></td>
 											<td>Stampa riepilogo</td>
 										</tr>
-										<tr onclick="scaricaImmagine(0)">
+										<tr onclick="scaricaImmagine(0,0)">
 											<td><i class="fal fa-image" title="Scarica riepilogo" ></i></td>
 											<td>Scarica immagine</td>
 										</tr>
@@ -127,7 +128,7 @@
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,1)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte1"  class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
-										<tr onclick="toggleFullscreenChart(1,0,this)">
+										<tr id="rowButtonRiepilogoPresenzeDitte1" onclick="toggleFullscreenChart(1,0,this)">
 											<td><i class="fad fa-expand-wide" ></i></td>
 											<td>Estendi</td>
 										</tr>
@@ -139,7 +140,7 @@
 											<td><i class="fal fa-print" title="Stampa riepilogo" ></i></td>
 											<td>Stampa riepilogo</td>
 										</tr>
-										<tr onclick="scaricaImmagine(1)">
+										<tr onclick="scaricaImmagine(1,0)">
 											<td><i class="fal fa-image" title="Scarica riepilogo" ></i></td>
 											<td>Scarica immagine</td>
 										</tr>
@@ -167,7 +168,7 @@
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,2)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte2" style="right:30" class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
-										<tr onclick="toggleFullscreenChart(2,0,this)">
+										<tr id="rowButtonRiepilogoPresenzeDitte2" onclick="toggleFullscreenChart(2,0,this)">
 											<td><i class="fad fa-expand-wide" ></i></td>
 											<td>Estendi</td>
 										</tr>
@@ -179,7 +180,7 @@
 											<td><i class="fal fa-print" title="Stampa riepilogo" ></i></td>
 											<td>Stampa riepilogo</td>
 										</tr>
-										<tr onclick="scaricaImmagine(2)">
+										<tr onclick="scaricaImmagine(2,0)">
 											<td><i class="fal fa-image" title="Scarica riepilogo" ></i></td>
 											<td>Scarica immagine</td>
 										</tr>
@@ -206,7 +207,7 @@
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,3)"></i>
 								<div id="contextMenuRiepilogoPresenzeDitte3"  class="contextMenuRiepilogoPresenzeDitte">
 									<table class="tableContextMenu">
-										<tr onclick="toggleFullscreenChart(3,1,this)">
+										<tr id="rowButtonRiepilogoPresenzeDitte3" onclick="toggleFullscreenChart(3,1,this)">
 											<td><i class="fad fa-expand-wide" ></i></td>
 											<td>Estendi</td>
 										</tr>
@@ -218,7 +219,7 @@
 											<td><i class="fal fa-print" title="Stampa riepilogo" ></i></td>
 											<td>Stampa riepilogo</td>
 										</tr>
-										<tr onclick="scaricaImmagine(3)">
+										<tr onclick="scaricaImmagine(3,1)">
 											<td><i class="fal fa-image" title="Scarica riepilogo" ></i></td>
 											<td>Scarica immagine</td>
 										</tr>
