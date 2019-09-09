@@ -48,7 +48,7 @@
 			.far,.fas,.fal{display:inline-block;float:left;}
 		</style>
 	</head>
-	<body onload="aggiungiNotifica('Stai lavorando sulla commessa <?php echo $_SESSION['commessa']; ?>');grafico0=1;getGrafico0('chartContainer0');grafico1=2;getGrafico1('chartContainer1');grafico2=1;getGrafico2('chartContainer2');grafico3=1;getGrafico3('chartContainer3');getTabellaErrori();getTabella4();removeCircleSpinner()">
+	<body onload="aggiungiNotifica('Stai lavorando sulla commessa <?php echo $_SESSION['commessa']; ?>');grafico0=1;getGrafico0('chartContainer0');grafico1=2;getGrafico1('chartContainer1');grafico2=1;getGrafico2('chartContainer2');grafico3=1;getGrafico3('chartContainer3');grafico6=1;getGrafico6('chartContainer6');grafico7=1;getGrafico7('chartContainer7');getTabellaErrori();getTabella4();removeCircleSpinner()">
 		<?php include('struttura.php'); ?>
 		<script>newCircleSpinner("Caricamento in corso...")</script>
 		<div class="modalPontiRiepilogoPresenzeDitteContainer" id="modalPontiRiepilogoPresenzeDitteContainer">
@@ -229,8 +229,81 @@
 						</div>
 						<div id="chartContainer3" class="chartContainer"></div>
 					</div>
-					<!--<div id="containerTabellaErrori" class="containerRiepilogoPresenzeDitteDoubleColumn" id="containerRiepilogoPresenzeDitteColumn4">-->
-					<div class="containerRiepilogoPresenzeDitteDoubleColumn" id="containerRiepilogoPresenzeDitteColumn4">
+					<div class="containerRiepilogoPresenzeDitteColumn" id="containerRiepilogoPresenzeDitteColumn6">
+						<div class="functionRiepilogoPresenzeDitte">
+							<div class="functionListRiepilogoPresenzeDitte">
+								<div class="visualizzazioneOrigineDatiHintRiepilogoPresenzeDitte">Visualizzazione dati</div>
+								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" id="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte6" onchange="getDatas6(this.value)">
+ 									<option value="grafico_operatori">Grafico operatori</option>
+									<option value="grafico_ore">Grafico ore</option>
+								</select>
+								<button class="buttonFilterRiepilogoPresenzeDitte" id="buttonFilterRiepilogoPresenzeDitte6" onclick="getFiltri(6)">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
+							</div>
+							<div class="functionMenuRiepilogoPresenzeDitte">
+								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,6)"></i>
+								<div id="contextMenuRiepilogoPresenzeDitte6"  class="contextMenuRiepilogoPresenzeDitte">
+									<table class="tableContextMenu">
+										<tr id="rowButtonRiepilogoPresenzeDitte6" onclick="toggleFullscreenChart(6,1,this)">
+											<td><i class="fad fa-expand-wide" ></i></td>
+											<td>Estendi</td>
+										</tr>
+										<tr onclick="scaricaExcel(myTableRiepilogoPresenzeDitte6)">
+											<td><i class="fal fa-file-excel" title="Scarica Excel riepilogo" ></i></td>
+											<td>Scarica Excel riepilogo</td>
+										</tr>
+										<tr onclick="stampaRiepilogo(6)">
+											<td><i class="fal fa-print" title="Stampa riepilogo" ></i></td>
+											<td>Stampa riepilogo</td>
+										</tr>
+										<tr onclick="scaricaImmagine(6,1)">
+											<td><i class="fal fa-image" title="Scarica riepilogo" ></i></td>
+											<td>Scarica immagine</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div id="chartContainer6" class="chartContainer"></div>
+					</div>
+					<div class="containerRiepilogoPresenzeDitteColumn" id="containerRiepilogoPresenzeDitteColumn7">
+						<div class="functionRiepilogoPresenzeDitte">
+							<div class="functionListRiepilogoPresenzeDitte">
+								<div class="visualizzazioneOrigineDatiHintRiepilogoPresenzeDitte">Visualizzazione dati</div>
+								<select class="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte" id="visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte7" onchange="getDatas7(this.value)">
+								<option value="grafico_operatori">Grafico operatori</option>
+									<option value="grafico_ore">Grafico ore</option>
+								</select>
+								<button class="buttonFilterRiepilogoPresenzeDitte" id="buttonFilterRiepilogoPresenzeDitte7" onclick="getFiltri(7)">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
+							</div>
+							<div class="functionMenuRiepilogoPresenzeDitte">
+								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,7)"></i>
+								<div id="contextMenuRiepilogoPresenzeDitte7" style="right:30" class="contextMenuRiepilogoPresenzeDitte">
+									<table class="tableContextMenu">
+										<tr id="rowButtonRiepilogoPresenzeDitte7" onclick="toggleFullscreenChart(7,1,this)">
+											<td><i class="fad fa-expand-wide" ></i></td>
+											<td>Estendi</td>
+										</tr>
+										<tr onclick="scaricaExcel(myTableRiepilogoPresenzeDitte7)">
+											<td><i class="fal fa-file-excel" title="Scarica Excel riepilogo" ></i></td>
+											<td>Scarica Excel riepilogo</td>
+										</tr>
+										<tr onclick="stampaRiepilogo(7)">
+											<td><i class="fal fa-print" title="Stampa riepilogo" ></i></td>
+											<td>Stampa riepilogo</td>
+										</tr>
+										<tr onclick="scaricaImmagine(7,1)">
+											<td><i class="fal fa-image" title="Scarica riepilogo" ></i></td>
+											<td>Scarica immagine</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div id="chartContainer7" class="chartContainer"></div>
+					</div>					
+				</div>
+				<div class="containerRiepilogoPresenzeDitteRow" id="containerRiepilogoPresenzeDitteRow3">
+					<div class="containerRiepilogoPresenzeDitteTripleColumn" id="containerRiepilogoPresenzeDitteColumn4">
 						<div class="functionRiepilogoPresenzeDitte" id="functionRiepilogoPresenzeDitteErrori">
 							<div class="functionListRiepilogoPresenzeDitte">
 								<span>Riepilogo errori di registrazione</span>

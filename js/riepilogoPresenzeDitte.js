@@ -1,6 +1,6 @@
 var chartArray=[];
 var fullscreen=false;
-var containers=["","","","","",""];
+var containers=["","","","","","","",""];
 var grafico0;
 var tabella0;
 var grafico1;
@@ -8,8 +8,20 @@ var tabella1;
 var grafico2;
 var tabella2;
 var grafico3;
+var grafico6;
+var grafico7;
 var filters=['anni','mesi','ponti','ditte'];
-var nGrafici=4;
+var nGrafici=[0,1,2,3,6,7];
+var activeFilters=[];
+nGrafici.forEach(function(globalI)
+{
+    activeFilters[globalI]={};
+    filters.forEach(function(filter)
+    {
+        activeFilters[globalI][filter]=[];
+    });
+});
+/*var nGrafici=5;
 var activeFilters=[];
 for (var globalI = 0; globalI < nGrafici; globalI++) 
 {
@@ -18,7 +30,8 @@ for (var globalI = 0; globalI < nGrafici; globalI++)
     {
         activeFilters[globalI][filter]=[];
     });
-}
+}*/
+
 function newCircleSpinner(message)
 {
     if(document.getElementById("containerCircleSpinner")!=null)
@@ -98,6 +111,350 @@ function getDatas3(view)
         case "media_mesi":grafico3=1;getGrafico3('chartContainer3');break;
         case "media_ditte":grafico3=2;getGrafico3('chartContainer3');break;
         case "tabella":getTabella3();break;
+    }
+}
+function getDatas6(view)
+{
+    switch(view)
+    {
+        case "grafico_operatori":grafico6=1;getGrafico6('chartContainer6');break;
+        case "grafico_ore":grafico6=2;getGrafico6('chartContainer6');break;
+    }
+}
+function getDatas7(view)
+{
+    switch(view)
+    {
+        case "grafico_operatori":grafico7=1;getGrafico7('chartContainer7');break;
+        case "grafico_ore":grafico7=2;getGrafico7('chartContainer7');break;
+    }
+}
+async function getGrafico7(container)
+{
+    containers[7]="grafico";
+    document.getElementById(container).innerHTML="";
+    newCircleSpinner("Caricamento in corso...");
+
+    document.getElementById("buttonFilterRiepilogoPresenzeDitte7").style.display="block";
+
+    if(activeFilters[7].anni.length==0 && activeFilters[7].ditte.length==0 && activeFilters[7].ponti.length==0)
+    {
+        activeFilters[7].anni=getAllAnni();
+        activeFilters[7].ditte=await getAllDitte();
+        activeFilters[7].ponti=await getAllPonti();
+    }
+    var JSONanni=JSON.stringify(activeFilters[7].anni);
+    var JSONditte=JSON.stringify(activeFilters[7].ditte);
+    var JSONponti=JSON.stringify(activeFilters[7].ponti);
+
+    if(grafico7==1)
+    {
+        $.post("getGrafico7tipo1.php",
+        {
+            JSONanni,
+            JSONditte,
+            JSONponti
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                //console.log(response);
+                removeCircleSpinner();
+                if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
+                {
+                    Swal.fire
+                    ({
+                        type: 'error',
+                        title: 'Errore',
+                        text: "Se il problema persiste contatta l' amministratore"
+                    });
+                    console.log(response);
+                }
+                else
+                {
+                    var data = JSON.parse(response);
+                    //console.log(data);
+                    if(container=="imageContainerHD")
+                        var fontSize=30;
+                    else
+                        var fontSize=15;
+                    chartArray[7] = new CanvasJS.Chart("chartContainer7", {
+                        animationEnabled: true,
+                        theme: "light2",
+                        title:{
+                            fontSize: fontSize,
+                            fontWeight:'normal',
+                            color:'gray',
+                            text: "Media operatori ditte"
+                        },
+                        axisY: {
+                            title: "N. operatori"
+                        },
+                        axisX: {
+                            title: "Mesi"
+                        },
+                        toolTip: {
+                            shared: false
+                        },
+                        legend: {
+                            cursor: "pointer",
+                            horizontalAlign: "center",
+                            dockInsidePlotArea: false,
+                            itemclick: toggleDataSeries7
+                        },
+                        data:data
+                    });
+                    function toggleDataSeries7(e)
+                    {
+                        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        } else{
+                            e.dataSeries.visible = true;
+                        }
+                        chartArray[7].render();
+                    }
+                    chartArray[7].render();
+                }
+            }
+            else
+                console.log(status);
+        });
+    }
+    else
+    {
+        $.post("getGrafico7tipo2.php",
+        {
+            JSONanni,
+            JSONditte,
+            JSONponti
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                removeCircleSpinner();
+                if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
+                {
+                    Swal.fire
+                    ({
+                        type: 'error',
+                        title: 'Errore',
+                        text: "Se il problema persiste contatta l' amministratore"
+                    });
+                    console.log(response);
+                }
+                else
+                {
+                    var data = JSON.parse(response);
+                    if(container=="imageContainerHD")
+                        var fontSize=30;
+                    else
+                        var fontSize=15;
+                    chartArray[7] = new CanvasJS.Chart("chartContainer7", {
+                        animationEnabled: true,
+                        theme: "light2",
+                        title:{
+                            fontSize: fontSize,
+                            fontWeight:'normal',
+                            color:'gray',
+                            text: "Media ore ditte"
+                        },
+                        axisY: {
+                            title: "Ore"
+                        },
+                        axisX: {
+                            title: "Mesi"
+                        },
+                        toolTip: {
+                            shared: false
+                        },
+                        legend: {
+                            cursor: "pointer",
+                            horizontalAlign: "center",
+                            dockInsidePlotArea: false,
+                            itemclick: toggleDataSeries7
+                        },
+                        data:data
+                    });
+                    function toggleDataSeries7(e)
+                    {
+                        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        } else{
+                            e.dataSeries.visible = true;
+                        }
+                        chartArray[7].render();
+                    }
+                    chartArray[7].render();
+                }
+            }
+            else
+                console.log(status);
+        });
+    }
+}
+async function getGrafico6(container)
+{
+    containers[6]="grafico";
+    document.getElementById(container).innerHTML="";
+    newCircleSpinner("Caricamento in corso...");
+
+    document.getElementById("buttonFilterRiepilogoPresenzeDitte6").style.display="block";
+
+    if(activeFilters[6].anni.length==0 && activeFilters[6].ditte.length==0 && activeFilters[6].ponti.length==0)
+    {
+        activeFilters[6].anni=getAllAnni();
+        activeFilters[6].ditte=await getAllDitte();
+        activeFilters[6].ponti=await getAllPonti();
+    }
+    var JSONanni=JSON.stringify(activeFilters[6].anni);
+    var JSONditte=JSON.stringify(activeFilters[6].ditte);
+    var JSONponti=JSON.stringify(activeFilters[6].ponti);
+
+    if(grafico6==1)
+    {
+        $.post("getGrafico6tipo1.php",
+        {
+            JSONanni,
+            JSONditte,
+            JSONponti
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                removeCircleSpinner();
+                if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
+                {
+                    Swal.fire
+                    ({
+                        type: 'error',
+                        title: 'Errore',
+                        text: "Se il problema persiste contatta l' amministratore"
+                    });
+                    console.log(response);
+                }
+                else
+                {
+                    var data = JSON.parse(response);
+                    if(container=="imageContainerHD")
+                        var fontSize=30;
+                    else
+                        var fontSize=15;
+                    chartArray[6] = new CanvasJS.Chart("chartContainer6", {
+                        animationEnabled: true,
+                        theme: "light2",
+                        title:{
+                            fontSize: fontSize,
+                            fontWeight:'normal',
+                            color:'gray',
+                            text: "Capacità ditte (N. operatori)"
+                        },
+                        axisY: {
+                            title: "N. operatori"
+                        },
+                        axisX: {
+                            title: "Mesi"
+                        },
+                        toolTip: {
+                            shared: false
+                        },
+                        legend: {
+                            cursor: "pointer",
+                            horizontalAlign: "center",
+                            dockInsidePlotArea: false,
+                            itemclick: toggleDataSeries6
+                        },
+                        data:data
+                    });
+                    function toggleDataSeries6(e)
+                    {
+                        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        } else{
+                            e.dataSeries.visible = true;
+                        }
+                        chartArray[6].render();
+                    }
+                    chartArray[6].render();
+                }
+            }
+            else
+                console.log(status);
+        });
+    }
+    else
+    {
+        $.post("getGrafico6tipo2.php",
+        {
+            JSONanni,
+            JSONditte,
+            JSONponti
+        },
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                removeCircleSpinner();
+                if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
+                {
+                    Swal.fire
+                    ({
+                        type: 'error',
+                        title: 'Errore',
+                        text: "Se il problema persiste contatta l' amministratore"
+                    });
+                    console.log(response);
+                }
+                else
+                {
+                    var data = JSON.parse(response);
+                    if(container=="imageContainerHD")
+                        var fontSize=30;
+                    else
+                        var fontSize=15;
+                    chartArray[6] = new CanvasJS.Chart("chartContainer6", {
+                        animationEnabled: true,
+                        theme: "light2",
+                        title:{
+                            fontSize: fontSize,
+                            fontWeight:'normal',
+                            color:'gray',
+                            text: "Capacità ditte (ore)"
+                        },
+                        axisY: {
+                            title: "Ore"
+                        },
+                        axisX: {
+                            title: "Mesi"
+                        },
+                        toolTip: {
+                            shared: false
+                        },
+                        legend: {
+                            cursor: "pointer",
+                            horizontalAlign: "center",
+                            dockInsidePlotArea: false,
+                            itemclick: toggleDataSeries6
+                        },
+                        data:data
+                    });
+                    function toggleDataSeries6(e)
+                    {
+                        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                            e.dataSeries.visible = false;
+                        } else{
+                            e.dataSeries.visible = true;
+                        }
+                        chartArray[6].render();
+                    }
+                    chartArray[6].render();
+                }
+            }
+            else
+                console.log(status);
+        });
     }
 }
 async function getGrafico0(container)
@@ -262,7 +619,7 @@ async function getGrafico0(container)
                 console.log(status);
         });
     }
-    chiudiPopupPonti();
+    //chiudiPopupPonti();
 }
 function getTabella0()
 {
@@ -518,7 +875,7 @@ async function getGrafico1(container)
                 console.log(status);
         });
     }
-    chiudiPopupPonti();
+    //chiudiPopupPonti();
 }
 function getTabella1()
 {
@@ -715,7 +1072,7 @@ async function getGrafico2(container)
                 console.log(status);
         });
     }
-    chiudiPopupPonti();
+    //chiudiPopupPonti();
 }
 function getTabella2()
 {
@@ -959,7 +1316,7 @@ async function getGrafico3(container)
                 console.log(status);
         });
     }
-    chiudiPopupPonti();
+    //chiudiPopupPonti();
 }
 function getTabella3()
 {
@@ -1209,6 +1566,16 @@ async function getFiltri(n)
             if(grafico3==2)
                 filtriOuterContainer.appendChild(getFiltroMesi(n));
             ;break;
+        case 6:
+            filtriOuterContainer.appendChild(getFiltroAnni(n));
+            filtriOuterContainer.appendChild(await getFiltroDitte(n));
+            filtriOuterContainer.appendChild(await getFiltroPonti(n));
+            break;
+        case 7:
+            filtriOuterContainer.appendChild(getFiltroAnni(n));
+            filtriOuterContainer.appendChild(await getFiltroDitte(n));
+            filtriOuterContainer.appendChild(await getFiltroPonti(n));
+            break;
     }
     Swal.fire
     ({
@@ -1248,6 +1615,18 @@ async function getFiltri(n)
                     getFilter("ponti",n);
                     getFilter("mesi",n);
                     getDatas3(document.getElementById("visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte3").value);
+                    break;
+                case 6:
+                    getFilter("anni",n);
+                    getFilter("ditte",n);
+                    getFilter("mesi",n);
+                    getDatas6(document.getElementById("visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte6").value);
+                    break;
+                case 7:
+                    getFilter("anni",n);
+                    getFilter("ditte",n);
+                    getFilter("mesi",n);
+                    getDatas7(document.getElementById("visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte7").value);
                     break;
             }
             if(fullscreen)
@@ -1869,10 +2248,15 @@ function toggleFullscreenChart(n,row,rowButton)
         //document.getElementById("containerRiepilogoPresenzeDitteRow"+row).style.height="";
         document.getElementById("containerRiepilogoPresenzeDitteRow"+row).style.width="";
 
-        for (var i = 0; i < nGrafici.length; i++)
+        nGrafici.forEach(function(nGrafico)
+        {
+            chartArray[nGrafico].render();
+        });
+
+        /*for (var i = 0; i < nGrafici.length; i++)
         {
             chartArray[i].render();
-        }
+        }*/
 
     }
     if(chartArray[n]!=null)
@@ -1911,7 +2295,11 @@ function getListActiveFilters(n)
                 valoriFiltriListItem.setAttribute("class","valoriFiltriListItem");
 
                 var valoriFiltriListItemSpan=document.createElement("span");
-                valoriFiltriListItemSpan.innerHTML=activeFilters[n][filter][i];
+
+                if(filter=="ditte")
+                    valoriFiltriListItemSpan.innerHTML=decodeURIComponent(activeFilters[n][filter][i]);
+                else
+                    valoriFiltriListItemSpan.innerHTML=activeFilters[n][filter][i];
 
                 valoriFiltriListItem.appendChild(valoriFiltriListItemSpan);
 
