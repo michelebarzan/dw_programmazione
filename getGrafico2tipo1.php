@@ -116,7 +116,7 @@ ORDER BY nomeDitta";
 				WHERE (dbo.cantiere_registrazioni.commessa = ".$_SESSION['id_commessa'].") AND (YEAR(dbo.cantiere_registrazioni.data) IN ('".$inAnni."')) AND (dbo.cantiere_ponti_ditte_registrazioni.ponte IN ('".$inPonti."')) AND 
 				(MONTH(dbo.cantiere_registrazioni.data) IN ('".$inMesi."'))) AS derivedtbl_1
 				WHERE nomeDitta IN ('".$inDitte."')
-				GROUP BY data, mese";
+				GROUP BY data, mese ORDER BY DATA";
 	$result2=sqlsrv_query($conn,$query2);
 	if($result2==FALSE)
 	{
