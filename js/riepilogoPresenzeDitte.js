@@ -1158,6 +1158,7 @@ async function getGrafico3(container)
         },
         function(response, status)
         {
+			//console.log(response);
             if(status=="success")
             {
                 removeCircleSpinner();

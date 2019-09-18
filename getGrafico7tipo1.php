@@ -42,7 +42,7 @@
                 (SELECT COUNT(data) AS nGiorni, nome, mese, anno
                 FROM (SELECT DISTINCT 
                 cantiere_registrazioni_1.data, cantiere_ditte_1.nome, cantiere_registrazioni_1.commessa, DATEPART(yy, cantiere_registrazioni_1.data) AS anno, DATEPART(mm, cantiere_registrazioni_1.data) 
-                AS mese, cantiere_ponti_ditte_registrazioni_1.ponte
+                AS mese
                 FROM dbo.cantiere_registrazioni AS cantiere_registrazioni_1 INNER JOIN
                 dbo.cantiere_ponti_ditte_registrazioni AS cantiere_ponti_ditte_registrazioni_1 ON cantiere_registrazioni_1.id_registrazione = cantiere_ponti_ditte_registrazioni_1.registrazione INNER JOIN
                 dbo.cantiere_ditte AS cantiere_ditte_1 ON cantiere_ponti_ditte_registrazioni_1.ditta = cantiere_ditte_1.id_ditta
@@ -68,5 +68,7 @@
         array_push($data,$dataSeries);
     }
     echo json_encode($data);
+	
+	//echo $query2;
     
 ?>
