@@ -8,7 +8,7 @@
 <html>
 	<head>
 		<title><?php echo $appName."&nbsp&#8594&nbsp".$pageName; ?></title>
-		<link rel="stylesheet" href="css/styleV30.css" />
+		<link rel="stylesheet" href="css/styleV31.css" />
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 		<link rel="shortcut icon" type="image/x-icon" href="images/logo.png" />
 		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
