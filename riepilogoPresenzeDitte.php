@@ -202,6 +202,9 @@
 									<option value="tabella">Tabella</option>
 								</select>
 								<button class="buttonFilterRiepilogoPresenzeDitte" id="buttonFilterRiepilogoPresenzeDitte3" onclick="getFiltri(3)">Filtri <i style="margin-left:5px;float:right;height:20px;margin-top:-5px;font-size:10px" class="fas fa-filter iconFilterRiepilogoPresenzeDitte"></i></button>
+								<div id="functionListRiepilogoPresenzeDitteCheckbox3Container">
+									<input type="checkbox" id="checkboxGrafico3RiepilogoPresenzeDitte" checked="checked" onchange="getDatas3(document.getElementById('visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte3').value)" />Festivi
+								</div>
 							</div>
 							<div class="functionMenuRiepilogoPresenzeDitte">
 								<i class="far fa-bars" style="float:right" onclick="openContextMenu(event,3)"></i>

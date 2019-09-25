@@ -105,18 +105,24 @@ GROUP BY mese";
 
 	$ponti=json_decode($_REQUEST['JSONponti']);
 	$inPonti=implode("','",$ponti);
+	
+	$festivi=$_REQUEST['festivi'];
+	$filterFestivi="";
+	if($festivi=="false")
+		$filterFestivi="AND giorno NOT IN ('sunday','saturday')";
 
 	$query2="SELECT AVG(CAST(nOperatori AS FLOAT)) AS mediaOperatori, mese
-	FROM (SELECT TOP (100) PERCENT COUNT(*) AS nOperatori, data, mese
+	FROM (SELECT TOP (100) PERCENT COUNT(*) AS nOperatori, data, mese,giorno
 	FROM (SELECT dbo.cantiere_ditte.nome AS nomeDitta, dbo.cantiere_operatori_ditte.nome, dbo.cantiere_operatori_ditte.cognome, MONTH(dbo.cantiere_registrazioni.data) AS mese, 
-	dbo.cantiere_ponti_ditte_registrazioni.ponte, YEAR(dbo.cantiere_registrazioni.data) AS anno, dbo.cantiere_registrazioni.commessa, dbo.cantiere_registrazioni.data
+	dbo.cantiere_ponti_ditte_registrazioni.ponte, YEAR(dbo.cantiere_registrazioni.data) AS anno, dbo.cantiere_registrazioni.commessa, dbo.cantiere_registrazioni.data,DATENAME(dw, CAST(DATEPART(m, dbo.cantiere_registrazioni.data) AS VARCHAR) 
+                         + '/' + CAST(DATEPART(d, dbo.cantiere_registrazioni.data) AS VARCHAR) + '/' + CAST(DATEPART(yy, dbo.cantiere_registrazioni.data) AS VARCHAR)) AS giorno
 	FROM dbo.cantiere_ponti_ditte_registrazioni INNER JOIN
 	dbo.cantiere_operatori_ditte ON dbo.cantiere_ponti_ditte_registrazioni.operatore = dbo.cantiere_operatori_ditte.id_operatore INNER JOIN
 	dbo.cantiere_registrazioni ON dbo.cantiere_ponti_ditte_registrazioni.registrazione = dbo.cantiere_registrazioni.id_registrazione INNER JOIN
 	dbo.cantiere_ditte ON dbo.cantiere_ponti_ditte_registrazioni.ditta = dbo.cantiere_ditte.id_ditta
 	WHERE (dbo.cantiere_registrazioni.commessa = ".$_SESSION['id_commessa'].") AND (YEAR(dbo.cantiere_registrazioni.data) IN ('".$inAnni."')) AND (dbo.cantiere_ponti_ditte_registrazioni.ponte IN ('".$inPonti."'))) AS derivedtbl_1
-	WHERE (nomeDitta IN ('".$inDitte."'))
-	GROUP BY  data, mese) AS derivedtbl_2
+	WHERE (nomeDitta IN ('".$inDitte."')) $filterFestivi
+	GROUP BY  data, mese,giorno) AS derivedtbl_2
 	GROUP BY mese";
 
 	/*$query2="SELECT AVG(CAST(nOperatori AS FLOAT)) AS mediaOperatori, mese

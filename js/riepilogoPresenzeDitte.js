@@ -106,6 +106,7 @@ function getDatas2(view)
 }
 function getDatas3(view)
 {
+	
     switch(view)
     {
         case "media_mesi":grafico3=1;getGrafico3('chartContainer3');break;
@@ -1144,6 +1145,8 @@ async function getGrafico3(container)
     var JSONponti=JSON.stringify(activeFilters[3].ponti);
     if(grafico3==1)
     {
+		document.getElementById("functionListRiepilogoPresenzeDitteCheckbox3Container").style.display="block";
+		var festivi=document.getElementById("checkboxGrafico3RiepilogoPresenzeDitte").checked;
         if(activeFilters[3].ditte.length==0)
         {
             activeFilters[3].ditte=await getAllDitte();
@@ -1155,10 +1158,11 @@ async function getGrafico3(container)
             JSONanni,
             JSONditte,
             JSONponti,
+			festivi
         },
         function(response, status)
         {
-			//console.log(response);
+			console.log(response);
             if(status=="success")
             {
                 removeCircleSpinner();
@@ -1242,6 +1246,7 @@ async function getGrafico3(container)
     }
     else
     {
+		document.getElementById("functionListRiepilogoPresenzeDitteCheckbox3Container").style.display="none";
         if(activeFilters[3].mesi.length==0)
         {
             activeFilters[3].mesi=getAllMesi();
@@ -1321,6 +1326,7 @@ async function getGrafico3(container)
 }
 function getTabella3()
 {
+	document.getElementById("functionListRiepilogoPresenzeDitteCheckbox3Container").style.display="none";
     containers[3]="tabella";
     document.getElementById('chartContainer3').innerHTML="";
     newCircleSpinner("Caricamento in corso...");
