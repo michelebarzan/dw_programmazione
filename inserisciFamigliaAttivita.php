@@ -16,7 +16,7 @@
 			   ,[tipologia]
 			   ,[famiglia]
 			   ,[ore])
-		  SELECT DISTINCT $codice_attivita,".$_SESSION['id_commessa'].",[tip cab].[Pax/Crew],'$famiglia',$ore FROM [tip cab] WHERE Famiglia='$famiglia'";
+		  SELECT DISTINCT $codice_attivita,".$_SESSION['id_commessa'].",[tip cab].[Pax/Crew],'$famiglia',$ore FROM [tip cab] WHERE Famiglia='$famiglia' and commessa=".$_SESSION['id_commessa'];
 	}
 	else
 	{
@@ -26,7 +26,7 @@
 			   ,[tipologia]
 			   ,[famiglia]
 			   ,[ore])
-		  SELECT DISTINCT $codice_attivita,".$_SESSION['id_commessa'].",[tip cab].[Pax/Crew],[tip cab].[Famiglia],$ore FROM [tip cab] WHERE Famiglia NOT IN (select DISTINCT famiglia from programmazione_tipologie_attivita WHERE codice_attivita=$codice_attivita AND commessa=".$_SESSION['id_commessa'].")";
+		  SELECT DISTINCT $codice_attivita,".$_SESSION['id_commessa'].",[tip cab].[Pax/Crew],[tip cab].[Famiglia],$ore FROM [tip cab] WHERE Famiglia NOT IN (select DISTINCT famiglia from programmazione_tipologie_attivita WHERE codice_attivita=$codice_attivita AND commessa=".$_SESSION['id_commessa'].") and commessa=".$_SESSION['id_commessa'];
 	}
 	$resultRighe=sqlsrv_query($conn,$queryRighe);
 	if($resultRighe==FALSE)
