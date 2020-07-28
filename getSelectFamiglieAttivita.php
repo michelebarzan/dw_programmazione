@@ -5,7 +5,7 @@
 	
 	$codice_attivita=$_REQUEST['codice_attivita'];
 	
-	$queryRighe="SELECT distinct [Famiglia] FROM [tip cab] WHERE [Famiglia] NOT IN (SELECT DISTINCT famiglia FROM programmazione_tipologie_attivita WHERE codice_attivita =$codice_attivita AND commessa=".$_SESSION['id_commessa'].") AND (commessa = 12) ORDER BY [Famiglia] DESC";
+	$queryRighe="SELECT distinct [Famiglia] FROM [tip cab] WHERE [Famiglia] NOT IN (SELECT DISTINCT famiglia FROM programmazione_tipologie_attivita WHERE codice_attivita =$codice_attivita AND commessa=".$_SESSION['id_commessa'].") AND (commessa = ".$_SESSION['id_commessa'].") ORDER BY [Famiglia] DESC";
 	$resultRighe=sqlsrv_query($conn,$queryRighe);
 	if($resultRighe==FALSE)
 	{

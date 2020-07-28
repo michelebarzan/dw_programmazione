@@ -620,7 +620,7 @@ function inserisciFamigliaAttivita()
                         {
                             document.getElementById("rigaFamiglie"+famiglia).click(); 
                             //triggerScroll("rigaFamiglie"+famiglia,"containerFamiglieCabine");
-                        }, 500);
+                        }, 2000);
                 }
                 else
                 {
