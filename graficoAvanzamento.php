@@ -1141,6 +1141,10 @@
 								<option value="2018" selected>2018</option>
 								<option value="2019">2019</option>	
 								<option value="2020">2020</option>	
+								<option value="2021">2021</option>	
+								<option value="2022">2022</option>	
+								<option value="2023">2023</option>	
+								<option value="2024">2024</option>	
 							</select>
 							<select class="selectFunctionListSmall" onchange="getDati()" id="selectGraficoAvanzamentoSettimanaInizio">
 								<option value='01' selected>01</option>
@@ -1206,6 +1210,10 @@
 								<option value="2018" selected>2018</option>
 								<option value="2019">2019</option>	
 								<option value="2020">2020</option>	
+								<option value="2021">2021</option>	
+								<option value="2022">2022</option>	
+								<option value="2023">2023</option>	
+								<option value="2024">2024</option>	
 							</select>
 							<select class="selectFunctionListSmall" onchange="getDati()" id="selectGraficoAvanzamentoSettimanaFine">
 								<option value='01'>01</option>
