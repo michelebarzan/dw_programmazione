@@ -1547,7 +1547,10 @@ html
 {
 	width:100%;
 	float:left;
-	display: block;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: space-evenly;
 	/*max-height: 550px;
 	overflow-y: auto;*/
 }

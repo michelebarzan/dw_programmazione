@@ -1689,7 +1689,7 @@ async function getFiltri(n)
     ({
         html:filtriOuterContainer.outerHTML,
         showCancelButton:true,
-        width: 'auto',
+        width: 650,
         cancelButtonText: "Annulla",
         confirmButtonText : "Filtra"
     }).then((result) => 
