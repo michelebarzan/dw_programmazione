@@ -9,6 +9,7 @@
 	<head>
 		<title><?php echo $appName."&nbsp&#8594&nbsp".$pageName; ?></title>
 		<link rel="stylesheet" href="css/styleV31.css" />
+		<link rel="stylesheet" href="css/riepilogoPresenzeDitte.css" />
 		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 		<link rel="shortcut icon" type="image/x-icon" href="images/logo.png" />
 		<script src="struttura.js"></script>
@@ -48,9 +49,9 @@
 			.far,.fas,.fal{display:inline-block;float:left;}
 		</style>
 	</head>
-	<body onload="aggiungiNotifica('Stai lavorando sulla commessa <?php echo $_SESSION['commessa']; ?>');grafico0=1;getGrafico0('chartContainer0');grafico1=2;getGrafico1('chartContainer1');grafico2=1;getGrafico2('chartContainer2');grafico3=1;getGrafico3('chartContainer3');grafico6=1;getGrafico6('chartContainer6');grafico7=1;getGrafico7('chartContainer7');getTabellaErrori();getTabella4();removeCircleSpinner()">
+	<body>
 		<?php include('struttura.php'); ?>
-		<script>newCircleSpinner("Caricamento in corso...")</script>
+		<script>newCircleSpinner("Caricamento in corso...");aggiungiNotifica('Stai lavorando sulla commessa <?php echo $_SESSION['commessa']; ?>');</script>
 		<div class="modalPontiRiepilogoPresenzeDitteContainer" id="modalPontiRiepilogoPresenzeDitteContainer">
 			<div class="modalPontiRiepilogoPresenzeDitteContainerMiddle">
 				<div class="modalPontiRiepilogoPresenzeDitteContainerInner">

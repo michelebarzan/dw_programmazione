@@ -6,7 +6,7 @@
 	$columnList=array();
 	$columnListPivot="";
 	
-	$query2="SELECT nome FROM cantiere_ditte";	
+	$query2="SELECT nome FROM cantiere_ditte where eliminata='false'";	
 	$result2=sqlsrv_query($conn,$query2);
 	if($result2==FALSE)
 	{

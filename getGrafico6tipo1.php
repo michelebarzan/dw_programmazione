@@ -32,7 +32,7 @@
                 dbo.cantiere_ponti_ditte_registrazioni ON dbo.cantiere_registrazioni.id_registrazione = dbo.cantiere_ponti_ditte_registrazioni.registrazione INNER JOIN
                 dbo.cantiere_ditte ON dbo.cantiere_ponti_ditte_registrazioni.ditta = dbo.cantiere_ditte.id_ditta INNER JOIN
                 dbo.cantiere_operatori_ditte ON dbo.cantiere_ponti_ditte_registrazioni.operatore = dbo.cantiere_operatori_ditte.id_operatore
-                WHERE (DATEPART(yy, dbo.cantiere_registrazioni.data) IN ('".$inAnni."')) AND (cantiere_ditte.nome = '$ditta') AND (dbo.cantiere_registrazioni.commessa = 6) AND (dbo.cantiere_ponti_ditte_registrazioni.ponte IN ('".$inPonti."'))
+                WHERE (DATEPART(yy, dbo.cantiere_registrazioni.data) IN ('".$inAnni."')) AND (cantiere_ditte.nome = '$ditta') AND (dbo.cantiere_registrazioni.commessa = ".$_SESSION['id_commessa'].") AND (dbo.cantiere_ponti_ditte_registrazioni.ponte IN ('".$inPonti."'))
                 GROUP BY dbo.cantiere_registrazioni.data, dbo.cantiere_ditte.nome, dbo.cantiere_registrazioni.commessa) AS derivedtbl_1
                 GROUP BY DATEPART(mm, data), ditta, commessa
                 ORDER BY ditta,mese";	

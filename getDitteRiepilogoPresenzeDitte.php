@@ -5,7 +5,7 @@
         
     $ditte=[];
 
-	$query2="SELECT * FROM cantiere_ditte ORDER BY nome";	
+	$query2="SELECT * FROM cantiere_ditte WHERE eliminata='false' ORDER BY nome";	
 	$result2=sqlsrv_query($conn,$query2);
 	if($result2==FALSE)
 	{

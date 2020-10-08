@@ -1548,6 +1548,8 @@ html
 	width:100%;
 	float:left;
 	display: block;
+	/*max-height: 550px;
+	overflow-y: auto;*/
 }
 .multipleFilterOuterContainerRiepilogPresenzeDitte
 {
@@ -1561,25 +1563,50 @@ html
 	padding-right:10px;
 	padding-bottom:5px;
 	border: 3px solid #ddd;
+
+	max-height: 550px;
+	overflow-y: auto;
 }
 .multipleFilterOuterContainerTitleRiepilogPresenzeDitte
 {
 	width:calc(100% + 20px);
 	margin-left:-10px;
-	height:20px;
-	line-height: 16px;
-	font-family: 'Montserrat',sans-serif;
-	font-size: 12px;
-	font-weight: bold;
-	float:left;
-	display: block;
-	text-align:left;
+	height:32px;
 	background-color:#ddd;
 	box-sizing: border-box;
 	padding-left: 10px;
-	padding-right: 5px;
-	margin-bottom:5px;
-	padding-bottom:5px;
+	padding-right: 10px;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: flex-start;
+	margin-bottom:10px;
+}
+.multipleFilterOuterContainerTitleRiepilogPresenzeDitte span
+{
+	font-family: 'Montserrat',sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	text-align:left;
+}
+.multipleFilterOuterContainerTitleRiepilogPresenzeDitte input
+{
+	font-family: 'Montserrat',sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	text-align:left;
+	margin-left: auto;
+	background-color: white;
+	border:none;
+	border-radius: 2px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-top: 5px;
+	margin-right: -5px;
+	margin-bottom: 8px;
+	height: 25px;
+	outline: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 .multipleFilterContainerRiepilogPresenzeDitte {
 	display: block;

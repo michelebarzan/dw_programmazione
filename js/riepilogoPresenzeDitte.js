@@ -12,26 +12,127 @@ var grafico6;
 var grafico7;
 var filters=['anni','mesi','ponti','ditte'];
 var nGrafici=[0,1,2,3,6,7];
-var activeFilters=[];
-nGrafici.forEach(function(globalI)
-{
-    activeFilters[globalI]={};
-    filters.forEach(function(filter)
-    {
-        activeFilters[globalI][filter]=[];
-    });
-});
-/*var nGrafici=5;
-var activeFilters=[];
-for (var globalI = 0; globalI < nGrafici; globalI++) 
-{
-    activeFilters[globalI]={};
-    filters.forEach(function(filter)
-    {
-        activeFilters[globalI][filter]=[];
-    });
-}*/
+var activeFilters;
 
+window.addEventListener("load", async function(event)
+{
+    var activeFiltersString=await getFiltriSalvati();
+    if(activeFiltersString=="" || activeFiltersString==null)
+    {
+        activeFilters=[];
+        nGrafici.forEach(function(globalI)
+        {
+            activeFilters[globalI]={};
+            filters.forEach(function(filter)
+            {
+                activeFilters[globalI][filter]=[];
+            });
+        });
+    }
+    else
+    {
+        console.log("1");
+        activeFilters=JSON.parse(activeFiltersString);
+    }
+    console.log(activeFilters);
+    /*try
+    {
+        activeFilters=[];
+        for (let index = 0; index < nGrafici.length; index++)
+        {
+            const i = nGrafici[index];
+            var activeFiltersString=await getCookie("activeFilters"+i);
+            if(activeFiltersString=="" || activeFiltersString==null)
+            {
+                activeFilters[i]={};
+                filters.forEach(function(filter)
+                {
+                    activeFilters[i][filter]=[];
+                });
+            }
+            else
+                activeFilters[i]=JSON.parse(activeFiltersString);
+        }
+    } 
+    catch (error)
+    {
+        console.log("error");
+        activeFilters=[];
+        nGrafici.forEach(function(globalI)
+        {
+            activeFilters[globalI]={};
+            filters.forEach(function(filter)
+            {
+                activeFilters[globalI][filter]=[];
+            });
+        });
+    }
+    console.log(activeFilters);*/
+
+    grafico0=1;getGrafico0('chartContainer0');
+    grafico1=2;getGrafico1('chartContainer1');
+    grafico2=1;getGrafico2('chartContainer2');
+    grafico3=1;getGrafico3('chartContainer3');
+    grafico6=1;getGrafico6('chartContainer6');
+    grafico7=1;getGrafico7('chartContainer7');
+    getTabellaErrori();
+    getTabella4();
+    removeCircleSpinner()
+});
+function getFiltriSalvati()
+{
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getFiltriSalvatiRiepilogoPresenzeDitte.php",
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(response);
+            }
+            else
+                reject({status});
+        });
+    });
+}
+function setFiltriSalvati(filtro)
+{
+    $.post("setFiltriSalvatiRiepilogoPresenzeDitte.php",{filtro},
+    function(response, status)
+    {
+        if(status=="success")
+        {
+            console.log(response);
+        }
+        else
+            reject({status});
+    });
+}
+function setCookie(name,value)
+{
+    $.post("setCookie.php",{name,value},
+    function(response, status)
+    {
+        if(status!="success")
+            console.log(status);
+    });
+}
+function getCookie(name)
+{
+    return new Promise(function (resolve, reject) 
+    {
+        $.get("getCookie.php",{name},
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(response);
+            }
+            else
+                reject({status});
+        });
+    });
+}
 function newCircleSpinner(message)
 {
     if(document.getElementById("containerCircleSpinner")!=null)
@@ -325,6 +426,7 @@ async function getGrafico6(container)
         {
             if(status=="success")
             {
+                //console.log(response);
                 removeCircleSpinner();
                 if(response.indexOf("error")>-1 || response.indexOf("notice")>-1 || response.indexOf("warning")>-1)
                 {
@@ -1162,7 +1264,6 @@ async function getGrafico3(container)
         },
         function(response, status)
         {
-			console.log(response);
             if(status=="success")
             {
                 removeCircleSpinner();
@@ -1636,6 +1737,16 @@ async function getFiltri(n)
                     getDatas7(document.getElementById("visualizzazioneOrigineDatiSelectRiepilogoPresenzeDitte7").value);
                     break;
             }
+            
+            /*for (let index = 0; index < nGrafici.length; index++)
+            {
+                const i = nGrafici[index];
+                var activeFiltersString=JSON.stringify(activeFilters[i]);
+                setCookie("activeFilters"+i,activeFiltersString);
+            }*/
+            var activeFiltersString=JSON.stringify(activeFilters);
+            setFiltriSalvati(activeFiltersString);
+
             if(fullscreen)
                 getListActiveFilters(n);
         }
@@ -1662,7 +1773,7 @@ function getFiltroAnni(n)
 
     var filtroMultiploOuterContainerTitle=document.createElement("div");
     filtroMultiploOuterContainerTitle.setAttribute("class","multipleFilterOuterContainerTitleRiepilogPresenzeDitte");
-    filtroMultiploOuterContainerTitle.innerHTML="Anno";
+    filtroMultiploOuterContainerTitle.innerHTML="<span>Anno</span>";
 
     filtroMultiploOuterContainer.appendChild(filtroMultiploOuterContainerTitle);
 
@@ -1749,7 +1860,7 @@ function getFiltroMesi(n)
 
     var filtroMultiploOuterContainerTitle=document.createElement("div");
     filtroMultiploOuterContainerTitle.setAttribute("class","multipleFilterOuterContainerTitleRiepilogPresenzeDitte");
-    filtroMultiploOuterContainerTitle.innerHTML="Mese";
+    filtroMultiploOuterContainerTitle.innerHTML="<span>Mese</span>";
 
     filtroMultiploOuterContainer.appendChild(filtroMultiploOuterContainerTitle);
 
@@ -1848,7 +1959,7 @@ function getFiltroPonti(n)
 
                 var filtroMultiploOuterContainerTitle=document.createElement("div");
                 filtroMultiploOuterContainerTitle.setAttribute("class","multipleFilterOuterContainerTitleRiepilogPresenzeDitte");
-                filtroMultiploOuterContainerTitle.innerHTML="Ponte";
+                filtroMultiploOuterContainerTitle.innerHTML="<span>Ponte</span>";
 
                 filtroMultiploOuterContainer.appendChild(filtroMultiploOuterContainerTitle);
 
@@ -1950,12 +2061,20 @@ function getFiltroDitte(n)
 
                 var filtroMultiploOuterContainerTitle=document.createElement("div");
                 filtroMultiploOuterContainerTitle.setAttribute("class","multipleFilterOuterContainerTitleRiepilogPresenzeDitte");
-                filtroMultiploOuterContainerTitle.innerHTML="Ditta";
+                filtroMultiploOuterContainerTitle.innerHTML="<span>Ditta</span>";
+
+                var searchInput=document.createElement("input");
+                searchInput.setAttribute("type","search");
+                searchInput.setAttribute("onsearch","cercaFiltroDitte(this)");
+                searchInput.setAttribute("onkeyup","cercaFiltroDitte(this)");
+                searchInput.setAttribute("placeholder","Cerca...");
+                filtroMultiploOuterContainerTitle.appendChild(searchInput);
 
                 filtroMultiploOuterContainer.appendChild(filtroMultiploOuterContainerTitle);
 
                 var filtroMultiploContainer=document.createElement("div");
                 filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte");
+                filtroMultiploContainer.setAttribute("id","multipleFilterContainerRiepilogPresenzeDitteTutteDitte");
                 var filtroMultiploLabel=document.createElement("label");
                 filtroMultiploLabel.setAttribute("class","multipleFilterLabelRiepilogPresenzeDitte");
                 filtroMultiploLabel.innerHTML="Tutti";
@@ -1981,7 +2100,7 @@ function getFiltroDitte(n)
                     var ditta=encodeURIComponent(ditte[i]);
                     var dittaLabel=ditteLabel[i];
                     var filtroMultiploContainer=document.createElement("div");
-                    filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte");
+                    filtroMultiploContainer.setAttribute("class","multipleFilterContainerRiepilogPresenzeDitte multipleFilterContainerRiepilogPresenzeDitte-ditte");
                     var filtroMultiploLabel=document.createElement("label");
                     filtroMultiploLabel.setAttribute("class","multipleFilterLabelRiepilogPresenzeDitte");
                     filtroMultiploLabel.innerHTML=dittaLabel;
@@ -2018,6 +2137,27 @@ function getFiltroDitte(n)
                 reject({status});
         });
     });
+}
+function cercaFiltroDitte(input)
+{
+    if(document.getElementById("filter-value-ditte-tutti").checked)
+        document.getElementById("filter-value-ditte-tutti").click();
+
+    $("#multipleFilterContainerRiepilogPresenzeDitteTutteDitte").hide();
+
+    var value = $(input).val().toLowerCase();
+    if(value=="" || value==" " || value==null)
+        $("#multipleFilterContainerRiepilogPresenzeDitteTutteDitte").show();
+
+    var all=document.getElementsByClassName("multipleFilterContainerRiepilogPresenzeDitte-ditte");
+    for (let index = 0; index < all.length; index++)
+    {
+        const element = all[index];
+        if(element.innerText.toLowerCase().indexOf(value) == -1)
+            $(element).hide();
+        else
+            $(element).show();
+    }
 }
 function getAllAnni()
 {
