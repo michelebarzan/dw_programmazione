@@ -175,7 +175,9 @@
 					if(status=="success")
 					{
 						if(response=="ok")
-							getTable('programmazione_riepilogo_griglia_web')
+						{
+							resetFilters();getTable(selectetTable);
+						}
 						else
 							window.alert(response);
 					}
