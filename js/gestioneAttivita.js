@@ -3,6 +3,7 @@ var famigliaSelezionata;
 var tipologiaSelezionata;
 var cabineAssegnazioniSpecificheOk=[];
 var cabineAssegnazioniSpecificheKo=[];
+var arrayAttivita=[];
 
 function nuovaAttivita()
 {
@@ -201,7 +202,9 @@ function getElencoAttivita()
     {
         if (this.readyState == 4 && this.status == 200) 
         {
-            document.getElementById("elencoAttivita").innerHTML  =this.responseText;
+            var tableHtml=this.responseText.split("|")[0];
+            arrayAttivita=JSON.parse(this.responseText.split("|")[1]);
+            document.getElementById("elencoAttivita").innerHTML  =tableHtml;
         }
     };
     xmlhttp.open("POST", "getElencoAttivita.php?id_gruppo="+id_gruppo, true);
@@ -232,20 +235,44 @@ function sortTable(index,table,order)
             // Check if the two rows should switch place:
             if(order=="asc")
             {
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) 
+                if(index==3)
                 {
-                    // If so, mark as a switch and break the loop:
-                    shouldSwitch = true;
-                    break;
+                    if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) 
+                    {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) 
+                    {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
                 }
             }
             if(order=="desc")
             {
-                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) 
+                if(index==3)
                 {
-                    // If so, mark as a switch and break the loop:
-                    shouldSwitch = true;
-                    break;
+                    if (parseInt(x.innerHTML) < parseInt(y.innerHTML)) 
+                    {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) 
+                    {
+                        // If so, mark as a switch and break the loop:
+                        shouldSwitch = true;
+                        break;
+                    }
                 }
             }
         }
@@ -1080,4 +1107,146 @@ function scaricaExcelRiepilogoAssegnazioni()
         filename: "RiepilogoAssegnazioni" //do not include extension
     });
     table.deleteRow(1);
+}
+async function cambiaPosizione(event,codice_attivita,tipo,button)
+{
+    event.stopPropagation();
+
+    ripristinaMaschera();
+    var all = document.getElementsByClassName("btnSelezionaAttivita");
+    for (var i = 0; i < all.length; i++) 
+    {
+        all[i].className = "btnSelezionaAttivita";
+    }
+    var all2 = document.getElementsByClassName("btnSelezionaAttivitaClicked");
+    for (var i = 0; i < all2.length; i++) 
+    {
+        all2[i].className = "btnSelezionaAttivita";
+    }
+    document.getElementById("btnSelezionaAttivita"+codice_attivita).className = "btnSelezionaAttivitaClicked";
+    var all3 = document.getElementsByClassName("righeAttivita");
+    for (var i = 0; i < all3.length; i++) 
+    {
+        all3[i].style.background = "";
+    }
+    document.getElementById("rigaAttivita"+codice_attivita).style.background = "#CCE5FF";
+
+    var icon=button.getElementsByTagName("i")[0];
+    icon.setAttribute("class","fad fa-spinner-third fa-spin");
+
+    var attivita=getFirstObjByPropValue(arrayAttivita,"codice_attivita",codice_attivita);
+
+    var index=arrayAttivita.indexOf(attivita);
+
+    if(tipo=="meno")
+    {
+        var indexBefore=index-1;
+        var attivitaBefore=arrayAttivita[indexBefore];
+
+        if(attivitaBefore!=undefined)
+        {
+            var queries=[];
+            queries[0]="UPDATE programmazione_attivita SET posizione="+attivitaBefore.posizione+" WHERE codice_attivita="+attivita.codice_attivita;
+            queries[1]="UPDATE programmazione_attivita SET posizione="+attivita.posizione+" WHERE codice_attivita="+attivitaBefore.codice_attivita;
+            var response=await updatePosizioneAttivita(queries);
+            if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+            {
+                Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                console.log(response);
+                resolve([]);
+            }
+            else
+            {
+                icon.setAttribute("class","fad fa-arrow-alt-square-up");
+
+                var posizione=attivita.posizione;
+                var posizioneBefore=attivitaBefore.posizione;
+
+                document.getElementById("posizione"+codice_attivita).innerHTML=posizioneBefore;
+                document.getElementById("posizione"+attivitaBefore.codice_attivita).innerHTML=posizione;
+
+                attivitaBefore.posizione=posizione;
+                arrayAttivita[index]=attivitaBefore;
+
+                attivita.posizione=posizioneBefore;
+                arrayAttivita[indexBefore]=attivita;
+
+                var tableBody=document.getElementById("myTableElencoAttivita").getElementsByTagName("tbody")[0];
+
+                var row=button.parentElement.parentElement;
+                var rowBefore=row.previousSibling;
+
+                tableBody.insertBefore(row, rowBefore); 
+            }
+        }
+    }
+    else
+    {
+        var indexAfter=index+1;
+        var attivitaAfter=arrayAttivita[indexAfter];
+
+        if(attivitaAfter!=undefined)
+        {
+            var queries=[];
+            queries[0]="UPDATE programmazione_attivita SET posizione="+attivitaAfter.posizione+" WHERE codice_attivita="+attivita.codice_attivita;
+            queries[1]="UPDATE programmazione_attivita SET posizione="+attivita.posizione+" WHERE codice_attivita="+attivitaAfter.codice_attivita;
+            var response=await updatePosizioneAttivita(queries);
+            if(response.toLowerCase().indexOf("error")>-1 || response.toLowerCase().indexOf("notice")>-1 || response.toLowerCase().indexOf("warning")>-1)
+            {
+                Swal.fire({icon:"error",title: "Errore. Se il problema persiste contatta l' amministratore",onOpen : function(){document.getElementsByClassName("swal2-title")[0].style.color="gray";document.getElementsByClassName("swal2-title")[0].style.fontSize="14px";}});
+                console.log(response);
+                resolve([]);
+            }
+            else
+            {
+                icon.setAttribute("class","fad fa-arrow-alt-square-down");
+
+                var posizione=attivita.posizione;
+                var posizioneAfter=attivitaAfter.posizione;
+
+                document.getElementById("posizione"+codice_attivita).innerHTML=posizioneAfter;
+                document.getElementById("posizione"+attivitaAfter.codice_attivita).innerHTML=posizione;
+
+                attivitaAfter.posizione=posizione;
+                arrayAttivita[index]=attivitaAfter;
+
+                attivita.posizione=posizioneAfter;
+                arrayAttivita[indexAfter]=attivita;
+
+                var tableBody=document.getElementById("myTableElencoAttivita").getElementsByTagName("tbody")[0];
+
+                var row=button.parentElement.parentElement;
+                var rowAfter=row.nextSibling;
+
+                tableBody.insertBefore(rowAfter, row); 
+            }
+        }
+    }
+}
+function updatePosizioneAttivita(queries)
+{
+    var JSONqueries=JSON.stringify(queries);
+    return new Promise(function (resolve, reject) 
+    {
+        $.post("updatePosizioneAttivita.php",{JSONqueries},
+        function(response, status)
+        {
+            if(status=="success")
+            {
+                resolve(response);
+            }
+        });
+    });
+}
+function getFirstObjByPropValue(array,prop,propValue)
+{
+    var return_item;
+    array.forEach(function(item)
+    {
+        if(item[prop]==propValue)
+        {
+            return_item= item;
+        }
+    });
+    return return_item;
 }

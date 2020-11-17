@@ -36,6 +36,8 @@
 				var tipologia=document.getElementById('selectEsportazioneGrigliaTipologia').value;
 				var dataInizio=document.getElementById('selectEsportazioneGrigliaDataInizio').value;
 				var dataFine=document.getElementById('selectEsportazioneGrigliaDataFine').value;
+
+				var orderBy=document.getElementById("funcionListEsportazioneGrigliaSelectOrdinamento").value;
 				
 				document.getElementById("btnRangeDate").value=dataInizio.split("-")[2]+"/"+dataInizio.split("-")[1]+"/"+dataInizio.split("-")[0]+"-"+dataFine.split("-")[2]+"/"+dataFine.split("-")[1]+"/"+dataFine.split("-")[0];
 				
@@ -64,7 +66,7 @@
 						});
 					}
 				};
-				xmlhttp.open("POST", "getEsportazioneGriglia.php?gruppo="+gruppo+"&ponte="+ponte+"&firezone="+firezone+"&ditta="+ditta+"&famiglia="+famiglia+"&tipologia="+tipologia+"&dataInizio="+dataInizio+"&dataFine="+dataFine, true);
+				xmlhttp.open("POST", "getEsportazioneGriglia.php?gruppo="+gruppo+"&ponte="+ponte+"&firezone="+firezone+"&ditta="+ditta+"&famiglia="+famiglia+"&tipologia="+tipologia+"&dataInizio="+dataInizio+"&dataFine="+dataFine+"&orderBy="+orderBy, true);
 				xmlhttp.send();
 			}
 			function openContextMenu(event)
@@ -207,18 +209,30 @@
 					</div>
 				</div>
 				<div id="funcionListEsportazioneGriglia">
-					<span class="funcionListEsportazioneGrigliaSpan">Tot. righe: <span id="totRigheContainer"></span></span>
-					<div class="funcionListGraficoAvanzamentoMenu">
-							<i class="far fa-bars" style="float:right" onclick="openContextMenu(event)"></i>
-							<div id="contextMenuGraficoAvanzamento" class="contextMenuGraficoAvanzamento">
-								<table class="tableContextMenu">
-									<tr onclick="scaricaExcel('myTableEsportazioneGriglia')">
-										<td><i class="fal fa-file-excel" title="Scarica Excel" ></i></td>
-										<td>Scarica Excel</td>
-									</tr>
-								</table>
-							</div>
+					<div class="funcionListEsportazioneGrigliaDiv">
+						<span>Tot. righe: </span>
+						<span id="totRigheContainer">0</span>
+					</div>
+					<div class="funcionListEsportazioneGrigliaDiv">
+						<span>Ordinamento attività</span>
+						<select id="funcionListEsportazioneGrigliaSelectOrdinamento" onchange="getEsportazioneGriglia()">
+							<option value="posizione DESC">Posizione descrescente</option>
+							<option value="posizione ASC">Posizione crescente</option>
+							<option value="descrizione DESC">Nome descrescente</option>
+							<option value="descrizione ASC">Nome crescente</option>
+						</select>
+					</div>
+					<div class="funcionListGraficoAvanzamentoMenu" style="margin-left:auto;margin-right:15px">
+						<i class="far fa-bars" style="float:right" onclick="openContextMenu(event)"></i>
+						<div id="contextMenuGraficoAvanzamento" class="contextMenuGraficoAvanzamento">
+							<table class="tableContextMenu">
+								<tr onclick="scaricaExcel('myTableEsportazioneGriglia')">
+									<td><i class="fal fa-file-excel" title="Scarica Excel" ></i></td>
+									<td>Scarica Excel</td>
+								</tr>
+							</table>
 						</div>
+					</div>
 				</div>
 				<div id="esportazioneGrigliaContainer">
 					<div class="wrapper1">

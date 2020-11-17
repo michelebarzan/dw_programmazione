@@ -137,7 +137,7 @@
 					table:'programmazione_riepilogo_griglia_web',
 					editable:false,
 					primaryKey:"id_nota",
-					noFilterColumns:["data_ultima_modifica"],
+					noFilterColumns:["data_ultima_modifica","nota"],
 					container:'riepilogoGrigliaWebContainer',
 					foreignKeys:[['id_commessa','commesse','id_commessa','commessa']],
 					orderBy:orderBy,

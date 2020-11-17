@@ -10,6 +10,7 @@
 	$tipologia=$_REQUEST['tipologia'];
 	$dataInizio=$_REQUEST['dataInizio'];
 	$dataFine=$_REQUEST['dataFine'];
+	$orderBy=$_REQUEST['orderBy'];
 	
 	/*$dataInizio=DateTime::createFromFormat('Y-m-d', $_REQUEST['dataInizio']);
 	$dataInizio=$dataInizio->format('Y-m-d');
@@ -48,7 +49,7 @@
 					echo "<th class='normalTableHeader'>Firezone</th>";
 					echo "<th class='normalTableHeader' style='height:30px;max-height:30px;width:170px;min-width:170px'>Famiglia</th>";
 					echo "<th class='normalTableHeader' style='height:30px;max-height:30px;width:70px;min-width:70px'>Tipologia</th>";
-					$query3="SELECT dbo.programmazione_attivita.descrizione, dbo.gruppi.id_gruppo, dbo.programmazione_attivita.codice_attivita FROM dbo.gruppi INNER JOIN dbo.gruppo_attivita ON dbo.gruppi.id_gruppo = dbo.gruppo_attivita.gruppo INNER JOIN dbo.programmazione_attivita ON dbo.gruppo_attivita.attivita = dbo.programmazione_attivita.codice_attivita  WHERE id_gruppo=$gruppo";	
+					$query3="SELECT dbo.programmazione_attivita.descrizione, dbo.gruppi.id_gruppo, dbo.programmazione_attivita.codice_attivita FROM dbo.gruppi INNER JOIN dbo.gruppo_attivita ON dbo.gruppi.id_gruppo = dbo.gruppo_attivita.gruppo INNER JOIN dbo.programmazione_attivita ON dbo.gruppo_attivita.attivita = dbo.programmazione_attivita.codice_attivita  WHERE id_gruppo=$gruppo ORDER BY $orderBy";	
 					$result3=sqlsrv_query($conn,$query3);
 					if($result3==FALSE)
 					{
