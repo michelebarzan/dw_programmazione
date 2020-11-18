@@ -20,5 +20,7 @@
 	}
 	array_push($ponti,"gen");
 	array_push($ponti,"pref");
+	array_push($ponti,"mag");
+	array_push($ponti,"bag");
 	echo json_encode($ponti);
 ?>
