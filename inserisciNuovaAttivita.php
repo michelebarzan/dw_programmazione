@@ -121,9 +121,10 @@
 						   ,[colore]
 						   ,[dashType]
 						   ,[note]
-						   ,[eliminata])
+						   ,[eliminata],
+						   posizione)
 							VALUES
-						   ($codice_attivita,'$descrizione',$kit,$pref,'$marinaarredo','$colore','$dashType','$note','false')";
+						   ($codice_attivita,'$descrizione',$kit,$pref,'$marinaarredo','$colore','$dashType','$note','false',(select max(posizione)+1 from Attivita))";
 				$resultRighe=sqlsrv_query($conn,$queryRighe);
 				if($resultRighe==FALSE)
 				{
