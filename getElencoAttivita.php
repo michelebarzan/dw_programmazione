@@ -71,8 +71,7 @@
 			echo "<tr>";
 				echo '<th onclick="sortTable(0,'.htmlspecialchars(json_encode("myTableElencoAttivita")).','.htmlspecialchars(json_encode("desc")).')">#<i class="fas fa-sort" style="margin-left:5px"></i></th>';
 				echo '<th onclick="sortTable(1,'.htmlspecialchars(json_encode("myTableElencoAttivita")).','.htmlspecialchars(json_encode("desc")).')">Descrizione<i class="fas fa-sort" style="margin-left:5px"></i></th>';
-				echo '<th></th>';
-				echo '<th onclick="sortTable(3,'.htmlspecialchars(json_encode("myTableElencoAttivita")).','.htmlspecialchars(json_encode("asc")).')">Pos.<i class="fas fa-sort" style="margin-left:5px"></i></th>';
+				echo '<th colspan="2" onclick="sortTable(3,'.htmlspecialchars(json_encode("myTableElencoAttivita")).','.htmlspecialchars(json_encode("asc")).')">Pos.<i class="fas fa-sort" style="margin-left:5px"></i></th>';
 				echo '<th>K./P.</th>';
 				echo '<th>N.Cab</th>';
 				echo '<th style="padding:0px;text-align:center" id="iconCercaAttivitaContainer" onclick="toggleCercaAttivita()"><i class="fas fa-filter"></i></th>';

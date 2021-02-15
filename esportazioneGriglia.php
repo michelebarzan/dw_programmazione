@@ -216,8 +216,8 @@
 					<div class="funcionListEsportazioneGrigliaDiv">
 						<span>Ordinamento attività</span>
 						<select id="funcionListEsportazioneGrigliaSelectOrdinamento" onchange="getEsportazioneGriglia()">
-							<option value="posizione DESC">Posizione descrescente</option>
 							<option value="posizione ASC">Posizione crescente</option>
+							<option value="posizione DESC">Posizione descrescente</option>
 							<option value="descrizione DESC">Nome descrescente</option>
 							<option value="descrizione ASC">Nome crescente</option>
 						</select>

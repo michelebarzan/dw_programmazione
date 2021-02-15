@@ -31,44 +31,8 @@ window.addEventListener("load", async function(event)
     }
     else
     {
-        console.log("1");
         activeFilters=JSON.parse(activeFiltersString);
     }
-    console.log(activeFilters);
-    /*try
-    {
-        activeFilters=[];
-        for (let index = 0; index < nGrafici.length; index++)
-        {
-            const i = nGrafici[index];
-            var activeFiltersString=await getCookie("activeFilters"+i);
-            if(activeFiltersString=="" || activeFiltersString==null)
-            {
-                activeFilters[i]={};
-                filters.forEach(function(filter)
-                {
-                    activeFilters[i][filter]=[];
-                });
-            }
-            else
-                activeFilters[i]=JSON.parse(activeFiltersString);
-        }
-    } 
-    catch (error)
-    {
-        console.log("error");
-        activeFilters=[];
-        nGrafici.forEach(function(globalI)
-        {
-            activeFilters[globalI]={};
-            filters.forEach(function(filter)
-            {
-                activeFilters[globalI][filter]=[];
-            });
-        });
-    }
-    console.log(activeFilters);*/
-
     grafico0=1;getGrafico0('chartContainer0');
     grafico1=2;getGrafico1('chartContainer1');
     grafico2=1;getGrafico2('chartContainer2');
@@ -441,6 +405,7 @@ async function getGrafico6(container)
                 else
                 {
                     var data = JSON.parse(response);
+                    console.log(data);
                     if(container=="imageContainerHD")
                         var fontSize=30;
                     else
@@ -513,6 +478,7 @@ async function getGrafico6(container)
                 else
                 {
                     var data = JSON.parse(response);
+                    console.log(data);
                     if(container=="imageContainerHD")
                         var fontSize=30;
                     else

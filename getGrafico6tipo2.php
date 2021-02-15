@@ -53,6 +53,41 @@
         array_push($data,$dataSeries);
     }
 
+    $dataSeries["type"]="line";
+    $dataSeries["name"]="TOTALE";
+    $dataSeries["toolTipContent"]="Ditta: {name}<br>Mese: {x}<br>Ore: {y}";
+    $dataSeries["showInLegend"]=true;
+    $dataSeries["markerSize"]=0;
+    $dataSeries["lineDashType"]="dash";
+    $dataSeries["color"]="red";
+    $dataSeries["dataPoints"]=[];
+
+    $query3="SELECT mese,SUM(sommaOre) AS sommaOre FROM (SELECT TOP (100) PERCENT DATEPART(mm, data) AS mese, ditta, commessa, MAX(sommaOre) AS sommaOre
+            FROM (SELECT dbo.cantiere_registrazioni.data, dbo.cantiere_ditte.nome AS ditta, dbo.cantiere_registrazioni.commessa, SUM(dbo.cantiere_ponti_ditte_registrazioni.ore) AS sommaOre
+            FROM dbo.cantiere_registrazioni INNER JOIN
+            dbo.cantiere_ponti_ditte_registrazioni ON dbo.cantiere_registrazioni.id_registrazione = dbo.cantiere_ponti_ditte_registrazioni.registrazione INNER JOIN
+            dbo.cantiere_ditte ON dbo.cantiere_ponti_ditte_registrazioni.ditta = dbo.cantiere_ditte.id_ditta
+            WHERE (DATEPART(yy, dbo.cantiere_registrazioni.data) IN ('".$inAnni."')) AND (dbo.cantiere_registrazioni.commessa = ".$_SESSION['id_commessa'].") AND (dbo.cantiere_ponti_ditte_registrazioni.ponte IN ('".$inPonti."'))
+            GROUP BY dbo.cantiere_registrazioni.data, dbo.cantiere_ditte.nome, dbo.cantiere_registrazioni.commessa) AS derivedtbl_1
+            GROUP BY DATEPART(mm, data), ditta, commessa) AS T
+                    GROUP BY mese ORDER BY mese";	
+    $result3=sqlsrv_query($conn,$query3);
+    if($result3==FALSE)
+    {
+        echo "<br><br>Errore esecuzione query<br>Query: ".$query3."<br>Errore: ";
+        die(print_r(sqlsrv_errors(),TRUE));
+    }
+    else
+    {
+        while($row3=sqlsrv_fetch_array($result3))
+        {
+            $point["x"]=$row3["mese"];
+            $point["y"]=$row3["sommaOre"];
+            array_push($dataSeries["dataPoints"],$point);
+        }
+    }
+    array_push($data,$dataSeries);
+
     echo json_encode($data);
     
 ?>
