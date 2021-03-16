@@ -37,7 +37,7 @@
 	}
 	else
 	{
-		$query2="SELECT data, MONTH(data) AS mese, nomeDitta, ponte, YEAR(data) AS anno, nome, cognome, ore FROM dbo.cantiere_riepilogo_registrazioni WHERE commessa=".$_SESSION['id_commessa']." ORDER BY anno,mese,nomeDitta";	
+		$query2="SELECT data, MONTH(data) AS mese, nomeDitta, ponte, YEAR(data) AS anno, nome, cognome, ore,note FROM dbo.cantiere_riepilogo_registrazioni WHERE commessa=".$_SESSION['id_commessa']." ORDER BY anno,mese,nomeDitta";	
 		$result2=sqlsrv_query($conn,$query2);
 		if($result2==FALSE)
 		{
@@ -54,6 +54,7 @@
 					echo "<th>Nome</th>";
 					echo "<th>Cognome</th>";
 					echo "<th>Ore</th>";
+					echo "<th>Note</th>";
 				echo "</tr>";
 			while($row2=sqlsrv_fetch_array($result2))
 			{
@@ -64,6 +65,7 @@
 					echo '<td>'.$row2["nome"].'</td>';
 					echo '<td>'.$row2["cognome"].'</td>';
 					echo '<td>'.$row2["ore"].'</td>';
+					echo '<td>'.$row2["note"].'</td>';
 				echo "</tr>";
 			}
 			echo "</table>";
