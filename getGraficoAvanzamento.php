@@ -37,7 +37,7 @@
 					$query2="SELECT TOP (100) PERCENT Descrizione, REPLACE(CAST(settimana AS varchar(10)), '.', '_') AS settimana,
 							(SELECT SUM(nCabine) AS nCabine
 							FROM (SELECT TOP (100) PERCENT dbo.programmazione_attivita.Descrizione, dbo.programmazione_attivita.codice_attivita, COUNT(*) AS nCabine, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), 
-							YEAR(dbo.attivitasvoltenoaccento.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, dbo.attivitasvoltenoaccento.datasvolgimento))) }, 2)) } AS settimana, 
+							YEAR(dbo.attivitasvoltenoaccento.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( dbo.attivitasvoltenoaccento.datasvolgimento))) }, 2)) } AS settimana, 
 							dbo.attivitasvoltenoaccento.commessa
 							FROM dbo.programmazione_attivita INNER JOIN
 							dbo.attivitasvoltenoaccento INNER JOIN
@@ -46,15 +46,15 @@
 							WHERE (dbo.tblDettagliAttSvolte.Ponte LIKE N'$ponte') AND (dbo.tblDettagliAttSvolte.FireZone LIKE N'$firezone') AND (dbo.attivitasvoltenoaccento.NomeDitta LIKE N'$ditta' OR
 							dbo.attivitasvoltenoaccento.NomeDitta IS NULL)
 							GROUP BY dbo.programmazione_attivita.Descrizione, dbo.programmazione_attivita.codice_attivita, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(dbo.attivitasvoltenoaccento.datasvolgimento)), '.') }, 
-							RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, dbo.attivitasvoltenoaccento.datasvolgimento))) }, 2)) }, dbo.attivitasvoltenoaccento.commessa
-							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(dbo.attivitasvoltenoaccento.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, 
+							RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( dbo.attivitasvoltenoaccento.datasvolgimento))) }, 2)) }, dbo.attivitasvoltenoaccento.commessa
+							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(dbo.attivitasvoltenoaccento.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( 
 							dbo.attivitasvoltenoaccento.datasvolgimento))) }, 2)) } > '$settimanaInizio') AND ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(dbo.attivitasvoltenoaccento.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0',
-							CONVERT(varchar(3), DATEPART(ww, dbo.attivitasvoltenoaccento.datasvolgimento))) }, 2)) } < '$settimanaFine') AND (dbo.programmazione_attivita.codice_attivita = ".$row3['codice_attivita'].") AND 
+							CONVERT(varchar(3), dbo.ISOweek( dbo.attivitasvoltenoaccento.datasvolgimento))) }, 2)) } < '$settimanaFine') AND (dbo.programmazione_attivita.codice_attivita = ".$row3['codice_attivita'].") AND 
 							(dbo.attivitasvoltenoaccento.commessa = ".$_SESSION['id_commessa'].")
 							ORDER BY settimana) AS derivedtbl_1
 							WHERE        (settimana <= v2.settimana) AND (Descrizione = v2.Descrizione)) AS nCabine, codice_attivita
 							FROM (SELECT TOP (100) PERCENT programmazione_attivita_1.Descrizione, programmazione_attivita_1.codice_attivita, COUNT(*) AS nCabine, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), 
-							YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) } AS settimana, 
+							YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) } AS settimana, 
 							attivitasvoltenoaccento_1.commessa
 							FROM dbo.programmazione_attivita AS programmazione_attivita_1 INNER JOIN
 							dbo.attivitasvoltenoaccento AS attivitasvoltenoaccento_1 INNER JOIN
@@ -63,18 +63,19 @@
 							WHERE (tblDettagliAttSvolte_1.Ponte LIKE N'$ponte') AND (tblDettagliAttSvolte_1.FireZone LIKE N'$firezone') AND (attivitasvoltenoaccento_1.NomeDitta LIKE N'$ditta' OR
 							attivitasvoltenoaccento_1.NomeDitta IS NULL)
 							GROUP BY programmazione_attivita_1.Descrizione, programmazione_attivita_1.codice_attivita, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', 
-							CONVERT(varchar(3), DATEPART(ww, attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) }, attivitasvoltenoaccento_1.commessa
-							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, attivitasvoltenoaccento_1.datasvolgimento))) }, 
-							2)) } > '$settimanaInizio') AND ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, 
+							CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) }, attivitasvoltenoaccento_1.commessa
+							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 
+							2)) } > '$settimanaInizio') AND ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( 
 							attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) } < '$settimanaFine') AND (programmazione_attivita_1.codice_attivita = ".$row3['codice_attivita'].") AND (attivitasvoltenoaccento_1.commessa = ".$_SESSION['id_commessa'].")
 							ORDER BY settimana) AS v2
 							ORDER BY Descrizione, settimana";
+							//echo "\n\n".$query2."\n\n";
 				}
 				if($tipo=="parziale")
 				{
 					$query2="SELECT TOP (100) PERCENT Descrizione, REPLACE(CAST(settimana AS varchar(10)), '.', '_') AS settimana, nCabine, codice_attivita
 							FROM (SELECT TOP (100) PERCENT programmazione_attivita_1.Descrizione, programmazione_attivita_1.codice_attivita, COUNT(*) AS nCabine, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), 
-							YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) } AS settimana, 
+							YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) } AS settimana, 
 							attivitasvoltenoaccento_1.commessa
 							FROM dbo.programmazione_attivita AS programmazione_attivita_1 INNER JOIN
 							dbo.attivitasvoltenoaccento AS attivitasvoltenoaccento_1 INNER JOIN
@@ -83,9 +84,9 @@
 							WHERE (tblDettagliAttSvolte_1.Ponte LIKE N'$ponte') AND (tblDettagliAttSvolte_1.FireZone LIKE N'$firezone') AND (attivitasvoltenoaccento_1.NomeDitta LIKE N'$ditta' OR
 							attivitasvoltenoaccento_1.NomeDitta IS NULL)
 							GROUP BY programmazione_attivita_1.Descrizione, programmazione_attivita_1.codice_attivita, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', 
-							CONVERT(varchar(3), DATEPART(ww, attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) }, attivitasvoltenoaccento_1.commessa
-							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) 
-							} > '$settimanaInizio') AND ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), DATEPART(ww, 
+							CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) }, attivitasvoltenoaccento_1.commessa
+							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) 
+							} > '$settimanaInizio') AND ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( 
 							attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) } < '$settimanaFine') AND (programmazione_attivita_1.codice_attivita = ".$row3['codice_attivita'].") AND (attivitasvoltenoaccento_1.commessa = ".$_SESSION['id_commessa'].")
 							ORDER BY settimana) AS v2
 							ORDER BY Descrizione, settimana";

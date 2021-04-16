@@ -55,6 +55,7 @@
 				{
 					if (this.readyState == 4 && this.status == 200) 
 					{
+						console.log("this.responseText");
 						console.log(this.responseText);
 						if(this.responseText.indexOf("Error")!=-1 || this.responseText.indexOf("error")!=-1 || this.responseText.indexOf("Notice")!=-1)
 						{
@@ -64,7 +65,6 @@
 						}
 						else
 						{
-							console.log(this.responseText);
 							var attivitaString=this.responseText.split("#")[1];
 							var lineeString=this.responseText.split("#")[0];
 							var attivita=attivitaString.split("%");
@@ -167,6 +167,8 @@
 									dataPoints:dataArray[l]
 								});
 							}
+							console.log("arrayOutput");
+							console.log(arrayOutput);
 							getGrafico();
 						}
 					}
