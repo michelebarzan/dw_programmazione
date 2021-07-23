@@ -11,6 +11,11 @@
 	$settimanaFine=$_REQUEST['settimanaFine'];
 	$legenda="";
 	
+	if($ditta=="%")
+		$filtro_ditta="IS NULL";
+	else
+		$filtro_ditta="= '$ditta'";
+
 	if(set_time_limit(120))
 	{
 		$query3="SELECT dbo.programmazione_attivita.descrizione,dbo.programmazione_attivita.colore,dbo.programmazione_attivita.dashType, dbo.gruppi.id_gruppo, dbo.programmazione_attivita.codice_attivita
@@ -43,8 +48,7 @@
 							dbo.attivitasvoltenoaccento INNER JOIN
 							dbo.tblDettagliAttSvolte ON dbo.attivitasvoltenoaccento.IDAttSvolte = dbo.tblDettagliAttSvolte.IDAttSvolteDettagli ON 
 							dbo.programmazione_attivita.codice_attivita = dbo.attivitasvoltenoaccento.codice_attivita
-							WHERE (dbo.tblDettagliAttSvolte.Ponte LIKE N'$ponte') AND (dbo.tblDettagliAttSvolte.FireZone LIKE N'$firezone') AND (dbo.attivitasvoltenoaccento.NomeDitta LIKE N'$ditta' OR
-							dbo.attivitasvoltenoaccento.NomeDitta IS NULL)
+							WHERE (dbo.tblDettagliAttSvolte.Ponte LIKE N'$ponte') AND (dbo.tblDettagliAttSvolte.FireZone LIKE N'$firezone') AND (dbo.attivitasvoltenoaccento.NomeDitta $filtro_ditta)
 							GROUP BY dbo.programmazione_attivita.Descrizione, dbo.programmazione_attivita.codice_attivita, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(dbo.attivitasvoltenoaccento.datasvolgimento)), '.') }, 
 							RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( dbo.attivitasvoltenoaccento.datasvolgimento))) }, 2)) }, dbo.attivitasvoltenoaccento.commessa
 							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(dbo.attivitasvoltenoaccento.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( 
@@ -60,8 +64,7 @@
 							dbo.attivitasvoltenoaccento AS attivitasvoltenoaccento_1 INNER JOIN
 							dbo.tblDettagliAttSvolte AS tblDettagliAttSvolte_1 ON attivitasvoltenoaccento_1.IDAttSvolte = tblDettagliAttSvolte_1.IDAttSvolteDettagli ON 
 							programmazione_attivita_1.codice_attivita = attivitasvoltenoaccento_1.codice_attivita
-							WHERE (tblDettagliAttSvolte_1.Ponte LIKE N'$ponte') AND (tblDettagliAttSvolte_1.FireZone LIKE N'$firezone') AND (attivitasvoltenoaccento_1.NomeDitta LIKE N'$ditta' OR
-							attivitasvoltenoaccento_1.NomeDitta IS NULL)
+							WHERE (tblDettagliAttSvolte_1.Ponte LIKE N'$ponte') AND (tblDettagliAttSvolte_1.FireZone LIKE N'$firezone') AND (attivitasvoltenoaccento_1.NomeDitta $filtro_ditta)
 							GROUP BY programmazione_attivita_1.Descrizione, programmazione_attivita_1.codice_attivita, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', 
 							CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) }, attivitasvoltenoaccento_1.commessa
 							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 
@@ -81,8 +84,7 @@
 							dbo.attivitasvoltenoaccento AS attivitasvoltenoaccento_1 INNER JOIN
 							dbo.tblDettagliAttSvolte AS tblDettagliAttSvolte_1 ON attivitasvoltenoaccento_1.IDAttSvolte = tblDettagliAttSvolte_1.IDAttSvolteDettagli ON 
 							programmazione_attivita_1.codice_attivita = attivitasvoltenoaccento_1.codice_attivita
-							WHERE (tblDettagliAttSvolte_1.Ponte LIKE N'$ponte') AND (tblDettagliAttSvolte_1.FireZone LIKE N'$firezone') AND (attivitasvoltenoaccento_1.NomeDitta LIKE N'$ditta' OR
-							attivitasvoltenoaccento_1.NomeDitta IS NULL)
+							WHERE (tblDettagliAttSvolte_1.Ponte LIKE N'$ponte') AND (tblDettagliAttSvolte_1.FireZone LIKE N'$firezone') AND (attivitasvoltenoaccento_1.NomeDitta $filtro_ditta)
 							GROUP BY programmazione_attivita_1.Descrizione, programmazione_attivita_1.codice_attivita, { fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', 
 							CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) }, attivitasvoltenoaccento_1.commessa
 							HAVING ({ fn CONCAT({ fn CONCAT(CONVERT(varchar(4), YEAR(attivitasvoltenoaccento_1.datasvolgimento)), '.') }, RIGHT({ fn CONCAT('0', CONVERT(varchar(3), dbo.ISOweek( attivitasvoltenoaccento_1.datasvolgimento))) }, 2)) 

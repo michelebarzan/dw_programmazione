@@ -374,6 +374,7 @@ async function getGrafico6(container)
         activeFilters[6].ditte=await getAllDitte();
         activeFilters[6].ponti=await getAllPonti();
     }
+    console.log(activeFilters[6].ditte);
     var JSONanni=JSON.stringify(activeFilters[6].anni);
     var JSONditte=JSON.stringify(activeFilters[6].ditte);
     var JSONponti=JSON.stringify(activeFilters[6].ponti);

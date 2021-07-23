@@ -44,7 +44,7 @@
 				var gruppo=document.getElementById('selectGraficoAvanzamentoGruppo').value;
 				var ponte=document.getElementById('selectGraficoAvanzamentoPonte').value;
 				var firezone=document.getElementById('selectGraficoAvanzamentoFirezone').value;
-				var ditta=document.getElementById('selectGraficoAvanzamentoDitta').value;
+				var ditta=document.getElementById('selectGraficoAvanzamentoDitta').value;console.log(ditta);
 				var settimanaInizio=document.getElementById('selectGraficoAvanzamentoAnnoInizio').value+"."+document.getElementById('selectGraficoAvanzamentoSettimanaInizio').value;
 				var settimanaFine=document.getElementById('selectGraficoAvanzamentoAnnoFine').value+"."+document.getElementById('selectGraficoAvanzamentoSettimanaFine').value;
 				
@@ -55,7 +55,6 @@
 				{
 					if (this.readyState == 4 && this.status == 200) 
 					{
-						console.log("this.responseText");
 						console.log(this.responseText);
 						if(this.responseText.indexOf("Error")!=-1 || this.responseText.indexOf("error")!=-1 || this.responseText.indexOf("Notice")!=-1)
 						{
@@ -1209,13 +1208,13 @@
 							<div class="titleFuncionList">Settimana fine</div>
 							<select class="selectFunctionListSmall" style="margin-right:10px;" onchange="getDati()" id="selectGraficoAvanzamentoAnnoFine">
 								<option value="2017">2017</option>								
-								<option value="2018" selected>2018</option>
+								<option value="2018">2018</option>
 								<option value="2019">2019</option>	
 								<option value="2020">2020</option>	
 								<option value="2021">2021</option>	
 								<option value="2022">2022</option>	
 								<option value="2023">2023</option>	
-								<option value="2024">2024</option>	
+								<option value="2024" selected>2024</option>	
 							</select>
 							<select class="selectFunctionListSmall" onchange="getDati()" id="selectGraficoAvanzamentoSettimanaFine">
 								<option value='01'>01</option>
@@ -1366,7 +1365,20 @@
 	}
 	function getElencoDitte($conn)
 	{
-		
+		$query2="SELECT * FROM cantiere_ditte WHERE eliminata='false' ORDER BY nome";	
+		$result2=sqlsrv_query($conn,$query2);
+		if($result2==FALSE)
+		{
+			echo "<br><br>Errore esecuzione query<br>Query: ".$query2."<br>Errore: ";
+			die(print_r(sqlsrv_errors(),TRUE));
+		}
+		else
+		{
+			while($row2=sqlsrv_fetch_array($result2))
+			{
+				echo '<option value="'.$row2["id_ditta"].'">'.$row2["nome"].'</td>';
+			}
+		}
 	}
 
 ?>
